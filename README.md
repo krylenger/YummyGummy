@@ -4,9 +4,8 @@ create your perfect meal
 
 
 1. Get daily meal plan
-    1.1 Get daily meal plan formed by the max calories amount. (protein/carbs/fat ratio should be approximately in 3/4/3 proportion) 
-    1.2 Get daily meal plan formed by the protein or carbs amount (aim: to gain or to lose weight)
-
+ 1.1 Get daily meal plan formed by the max calories amount. (protein/carbs/fat ratio should be approximately in 3/4/3 proportion)
+ 1.2 Get daily meal plan formed by the protein or carbs amount (aim: to gain or to lose weight)
 2. Find recipes to use ingredients you already have ("what's in your fridge" search)
 3. Searching recipe by the name.
 4. Adding favourite recipes.
