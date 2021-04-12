@@ -1,4 +1,4 @@
-# YummyGummy App
+# YummySpoon
 create your perfect meal
 
 [Spoonacular API](https://spoonacular.com/food-api)
