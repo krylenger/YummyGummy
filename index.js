@@ -1,7 +1,7 @@
 // Start from here
-import {recipesByName, dailyMealPlan} from './apiData';
+import { recipesByName, dailyMealPlan } from './apiData';
 
-console.log(dailyMealPlan);
+// console.log(dailyMealPlan);
 
 window.dataStore = {
   currentGoal: '',
@@ -21,8 +21,12 @@ function setCurrentGoal(value) {
 
 function GoalSwitch(currentGoal, setCurrentGoal) {
   return `
-    ${[{ id: 'goalGain', goal: 'gain' }, { id: 'goalLose', goal: 'lose' }].map(
-      ({ goal, id }) => `
+    ${[
+      { id: 'goalGain', goal: 'gain' },
+      { id: 'goalLose', goal: 'lose' },
+    ]
+      .map(
+        ({ goal, id }) => `
       <input 
         id="${id}" 
         type="radio" 
@@ -31,49 +35,51 @@ function GoalSwitch(currentGoal, setCurrentGoal) {
         onchange="(${setCurrentGoal})(this.value);"
        />
       <label for="${id}">${goal}</label>  
-    `
-     ).join('')}`;
+    `,
+      )
+      .join('')}`;
 }
 
 function SetGoal() {
-  const {currentGoal, usersWeight} = window.dataStore;
+  const { currentGoal, usersWeight } = window.dataStore;
   return `<div>
     <h2>Do you want to lose or to gain weight?</h2>
     ${GoalSwitch(currentGoal, setCurrentGoal)}
     <p>Meal description ... Meal description ... Meal description ... Meal description ...  </p>
     <h2>What's your weight?</h2>
     <input type="number" value="${usersWeight}" placeholder="your weight" onchange="window.dataStore.usersWeight = this.value; window.renderApp();">
-  </div>`
+  </div>`;
 }
 
 function RenderDailyMealPlan() {
-  const {currentGoal, usersWeight} = window.dataStore;
-  const {meals} = dailyMealPlan;
-  console.log(meals);
+  const { currentGoal, usersWeight } = window.dataStore;
+  const { meals } = dailyMealPlan;
+  // console.log(meals);
 
   if (currentGoal && usersWeight) {
-    return meals.map(meal => `<div>${meal.title}</div>
-    <a href="${meal.sourceUrl}">link</a>`)
+    return meals.map(
+      meal => `<div>${meal.title}</div>
+    <a href="${meal.sourceUrl}">link</a>`,
+    );
   } else {
     return '';
   }
-  
 }
 
 function FillFridgeOnChangeCB(value) {
   if (window.dataStore.fridgeItems.length < 5) {
-    window.dataStore.fridgeItems.push(value); 
-    value=''; 
+    window.dataStore.fridgeItems.push(value);
+    value = '';
     window.renderApp();
   } else {
-    alert('5 ingridients are maximum')
+    alert('5 ingridients are maximum');
   }
 }
 
 window.FillFridgeOnChangeCB = FillFridgeOnChangeCB;
 
 function FillFridge() {
-  const {fridgeItems} = window.dataStore;
+  const { fridgeItems } = window.dataStore;
   return `<div>
       <h2>fridge</h2>
       <p>Enter up to 5 products you have in the fridge to cook the best meal </p>
@@ -82,18 +88,22 @@ function FillFridge() {
         placeholder="what is in your fridge?" 
         onchange="window.FillFridgeOnChangeCB(this.value)">
       
-  </div>`
+  </div>`;
 }
 // <input type="submit">
 
 function RenderFridgeRecipes() {
   if (window.dataStore.fridgeItems.length > 0) {
-    console.log('hi');
+    // console.log('hi');
   }
-  console.log(window.dataStore.fridgeItems);
-  return `${window.dataStore.fridgeItems.map(fridgeItem => `<div>
+  // console.log(window.dataStore.fridgeItems);
+  return `${window.dataStore.fridgeItems
+    .map(
+      fridgeItem => `<div>
   ${fridgeItem}
-  </div>`).join('')}`
+  </div>`,
+    )
+    .join('')}`;
 }
 
 function SearchRecipes() {
@@ -105,23 +115,21 @@ function SearchRecipes() {
       onchange="window.dataStore.searchedRecipe = this.value; window.renderApp()"
     />
 
-  </div>`
+  </div>`;
 }
 
 function RenderRecipes() {
-  
   const recipesData = recipesByName.results;
   // console.log(recipesData);
 
-  return (window.dataStore.searchedRecipe) ? `
-  ${recipesData.filter(recipe => 
-   recipe.title.toLowerCase().includes(window.dataStore.searchedRecipe)
-   ).map(recipeObj =>  `<div>${recipeObj.title}</div>`
-    ).join('')
-  }
-  ` : '';
-
-
+  return window.dataStore.searchedRecipe
+    ? `
+  ${recipesData
+    .filter(recipe => recipe.title.toLowerCase().includes(window.dataStore.searchedRecipe))
+    .map(recipeObj => `<div>${recipeObj.title}</div>`)
+    .join('')}
+  `
+    : '';
 }
 
 window.renderApp = renderApp;
@@ -144,5 +152,4 @@ function App() {
   </div>`;
 }
 
-renderApp()
- 
+renderApp();
