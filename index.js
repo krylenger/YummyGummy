@@ -1,5 +1,5 @@
 // Start from here
-import { recipesByName, dailyMealPlan } from './apiData';
+import { recipesByName, dailyMealPlan, recipesByIngredients } from './apiData';
 
 // console.log(dailyMealPlan);
 
@@ -10,6 +10,7 @@ window.dataStore = {
   fridgeItems: [],
   usersWeight: '',
   searchedRecipe: '',
+  fridgeIsMagic: false,
 };
 
 if (module.hot) {
@@ -99,9 +100,12 @@ function FillFridge() {
 
 window.confirmButtonCB = confirmButtonCB;
 
-function confirmButtonCB() {}
+function confirmButtonCB() {
+  window.dataStore.fridgeIsMagic = true;
+  window.renderApp();
+}
 
-function RenderFridgeRecipes() {
+function RenderFridgeIngredients() {
   let confirmButton = '';
   if (window.dataStore.fridgeItems.length > 0) {
     confirmButton = `<button onclick="window.confirmButtonCB()" >Magic time!</button>`;
@@ -115,6 +119,19 @@ function RenderFridgeRecipes() {
     )
     .join('')}
     ${confirmButton}`;
+}
+
+function RenderFridgeRecipes() {
+  if (window.dataStore.fridgeIsMagic) {
+    return `<div>
+      ${recipesByIngredients
+        .map(recipe => `<div><p>${recipe.title}</p></div>`)
+        .slice(5)
+        .join('')}
+    </div>`;
+  } else {
+    return ``;
+  }
 }
 
 function SearchRecipes() {
@@ -155,8 +172,8 @@ function App() {
     ${SetGoal()}
     ${RenderDailyMealPlan()}
     ${FillFridge()}
+    ${RenderFridgeIngredients()}
     ${RenderFridgeRecipes()}
-    
     ${SearchRecipes()}
     ${RenderRecipes()}
   </div>`;
