@@ -1,9 +1,12 @@
 // Start from here
 import { recipesByName, dailyMealPlan, recipesByIngredients } from './apiData';
+import styles from './style';
 
-// console.log(dailyMealPlan);
+const appRoot = document.getElementById('app-root');
 
 window.renderApp = renderApp;
+window.FillFridgeOnChangeCB = FillFridgeOnChangeCB;
+window.confirmButtonCB = confirmButtonCB;
 
 window.dataStore = {
   currentGoal: '',
@@ -15,6 +18,28 @@ window.dataStore = {
 
 if (module.hot) {
   module.hot.accept();
+}
+
+function GetMealPlanByGoal() {
+  return `<div class="${styles.getMealPlanByGoal}">
+    ${SetGoal()}
+    ${RenderDailyMealPlan()}
+  </div>`;
+}
+
+function GetRecipeByIngredients() {
+  return `<div class="${styles.getMealPlanByGoal}">
+    ${FillFridge()}
+    ${RenderFridgeIngredients()}
+    ${RenderFridgeRecipes()}
+  </div>`;
+}
+
+function SearchForRecipesByName() {
+  return `<div>
+    ${SearchRecipes()}
+    ${RenderRecipes()}
+  </div>`;
 }
 
 function setCurrentGoal(value) {
@@ -58,32 +83,30 @@ function SetGoal() {
 function RenderDailyMealPlan() {
   const { currentGoal, usersWeight } = window.dataStore;
   const { meals } = dailyMealPlan;
-  // console.log(meals);
+  let content = '';
 
   if (currentGoal && usersWeight) {
-    return meals.map(
-      meal => `<div>${meal.title}</div>
-    <a href="${meal.sourceUrl}">link</a>`,
+    content += meals.map(
+      ({ title, sourceUrl }) => `<div>${title}</div>
+    <a href="${sourceUrl}">link</a>`,
     );
-  } else {
-    return '';
   }
+  return content ? `<div class="${styles.RenderDailyMealPlanContainer}">${content}</div>` : '';
 }
 
 function FillFridgeOnChangeCB(value) {
-  if (window.dataStore.fridgeItems.length < 5) {
-    window.dataStore.fridgeItems.push(value);
+  const { fridgeItems } = window.dataStore;
+
+  if (fridgeItems.length < 5) {
+    fridgeItems.push(value);
     value = '';
     window.renderApp();
   } else {
-    alert('5 ingridients are maximum');
+    alert('5 ingredients are maximum');
   }
 }
 
-window.FillFridgeOnChangeCB = FillFridgeOnChangeCB;
-
 function FillFridge() {
-  const { fridgeItems } = window.dataStore;
   return `<div>
       <h2>What's in your fridge?</h2>
       <p>Enter up to 5 products you have in the fridge to cook the best meal. Example: apple, milk, sugar. </p>
@@ -96,9 +119,6 @@ function FillFridge() {
       
   </div>`;
 }
-// <input type="submit">
-
-window.confirmButtonCB = confirmButtonCB;
 
 function confirmButtonCB() {
   window.dataStore.fridgeIsMagic = true;
@@ -110,7 +130,6 @@ function RenderFridgeIngredients() {
   if (window.dataStore.fridgeItems.length > 0) {
     confirmButton = `<button onclick="window.confirmButtonCB()" >Magic time!</button>`;
   }
-  // console.log(window.dataStore.fridgeItems);
   return `${window.dataStore.fridgeItems
     .map(
       fridgeItem => `<div>
@@ -122,60 +141,58 @@ function RenderFridgeIngredients() {
 }
 
 function RenderFridgeRecipes() {
-  if (window.dataStore.fridgeIsMagic) {
-    return `<div>
+  const { fridgeIsMagic } = window.dataStore;
+  let content = '';
+  if (fridgeIsMagic) {
+    content = `
       ${recipesByIngredients
-        .map(recipe => `<div><p>${recipe.title}</p></div>`)
+        .map(({ title }) => `<div><p>${title}</p></div>`)
         .slice(5)
         .join('')}
-    </div>`;
-  } else {
-    return ``;
+    `;
   }
+  return content ? `<div class="${styles.RenderDailyMealPlanContainer}">${content}</div>` : '';
 }
 
 function SearchRecipes() {
+  const { searchedRecipe } = window.dataStore;
   return `<div>
     <h2>Search by recipe name</h2>
     <input 
       type="text" 
-      value="${window.dataStore.searchedRecipe}" 
+      value="${searchedRecipe}" 
       placeholder="enter recipe (ex: rice)" 
       onchange="window.dataStore.searchedRecipe = this.value; window.renderApp()"
     />
-
   </div>`;
 }
 
 function RenderRecipes() {
   const recipesData = recipesByName.results;
-  // console.log(recipesData);
+  const { searchedRecipe } = window.dataStore;
+  let content = '';
 
-  return window.dataStore.searchedRecipe
+  content = searchedRecipe
     ? `
   ${recipesData
-    .filter(recipe => recipe.title.toLowerCase().includes(window.dataStore.searchedRecipe))
+    .filter(recipe => recipe.title.toLowerCase().includes(searchedRecipe))
     .map(recipeObj => `<div>${recipeObj.title}</div>`)
     .join('')}
   `
     : '';
+  return content ? `<div>${content}</div>` : '';
 }
 
 function renderApp() {
-  const appRoot = document.getElementById('app-root');
   appRoot.innerHTML = App();
 }
 
 function App() {
-  return `<div>
-    <h1>YummySpoon</h1>
-    ${SetGoal()}
-    ${RenderDailyMealPlan()}
-    ${FillFridge()}
-    ${RenderFridgeIngredients()}
-    ${RenderFridgeRecipes()}
-    ${SearchRecipes()}
-    ${RenderRecipes()}
+  return `<div class="${styles.apps}" >
+    <header class="${styles.header}"><h1>YummySpoon</h1></header>
+    ${GetMealPlanByGoal()}
+    ${GetRecipeByIngredients()}
+    ${SearchForRecipesByName()}
   </div>`;
 }
 

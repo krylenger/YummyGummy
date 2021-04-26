@@ -1,0 +1,30 @@
+* {
+  margin: 0px;
+}
+
+.apps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  margin: 10px;
+  background: yellow;
+}
+
+.header {
+  text-align: center;
+  width: 100%;
+}
+
+.getMealPlanByGoal {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  min-height: 70vh;
+  background: red;
+}
+
+.RenderDailyMealPlanContainer {
+  max-height: 50%;
+  background: green;
+}
