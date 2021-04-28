@@ -1,5 +1,6 @@
 // Start from here
 import { recipesByName, dailyMealPlan, recipesByIngredients } from './apiData';
+import { getSearchRecipeUrl, getUrlOfDetailedRecipe } from './utils';
 import styles from './style';
 
 const appRoot = document.getElementById('app-root');
@@ -7,13 +8,19 @@ const appRoot = document.getElementById('app-root');
 window.renderApp = renderApp;
 window.FillFridgeOnChangeCB = FillFridgeOnChangeCB;
 window.confirmButtonCB = confirmButtonCB;
+window.performSearchRecipes = performSearchRecipes;
+window.validateAndLoadData = validateAndLoadData;
 
 window.dataStore = {
   currentGoal: '',
   fridgeItems: [],
   usersWeight: '',
   searchedRecipe: '',
-  fridgeIsMagic: false,
+  detailedRecipesInfo: [],
+  isMagicFridge: false,
+  isDataLoading: false,
+  error: null,
+  recipesInCache: [],
 };
 
 if (module.hot) {
@@ -121,7 +128,7 @@ function FillFridge() {
 }
 
 function confirmButtonCB() {
-  window.dataStore.fridgeIsMagic = true;
+  window.dataStore.isMagicFridge = true;
   window.renderApp();
 }
 
@@ -141,9 +148,9 @@ function RenderFridgeIngredients() {
 }
 
 function RenderFridgeRecipes() {
-  const { fridgeIsMagic } = window.dataStore;
+  const { isMagicFridge } = window.dataStore;
   let content = '';
-  if (fridgeIsMagic) {
+  if (isMagicFridge) {
     content = `
       ${recipesByIngredients
         .map(({ title }) => `<div><p>${title}</p></div>`)
@@ -154,6 +161,56 @@ function RenderFridgeRecipes() {
   return content ? `<div class="${styles.RenderDailyMealPlanContainer}">${content}</div>` : '';
 }
 
+function isCurrentRecipeInCache() {
+  const { recipesInCache, searchedRecipe } = window.dataStore;
+  return Boolean(recipesInCache[searchedRecipe]);
+}
+
+function loadDetailedRecipesInfo({ results }) {
+  const urlsOfDetailedRecipes = results.map(result => getUrlOfDetailedRecipe(result.id));
+  let requests = urlsOfDetailedRecipes.map(url => fetch(url));
+  return Promise.all(requests)
+    .then(responses => Promise.all(responses.map(r => r.json())))
+    .then(data => {
+      window.dataStore.detailedRecipesInfo = data;
+    })
+    .catch(error => console.error(error + ' inside loadDetailedRecipesInfo'));
+}
+
+function validateAndLoadData() {
+  const { searchedRecipe } = window.dataStore;
+  const url = getSearchRecipeUrl(searchedRecipe);
+
+  if (!isCurrentRecipeInCache()) {
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => ({ data }));
+  }
+  return Promise.resolve({});
+}
+
+function performSearchRecipes(recipeName) {
+  window.dataStore.searchedRecipe = recipeName;
+  window.dataStore.error = null;
+  window.dataStore.isDataLoading = true;
+
+  window
+    .validateAndLoadData()
+    .then(({ error, data }) => {
+      window.dataStore.isDataLoading = false;
+      if (error) {
+        window.dataStore.error = error;
+      } else if (data) {
+        window.dataStore.recipesInCache[recipeName] = data;
+        loadDetailedRecipesInfo(data);
+      }
+    })
+    .catch(err => {
+      window.dataStore.error = `Some error occurred ${err}`;
+    })
+    .finally(window.renderApp);
+}
+
 function SearchRecipes() {
   const { searchedRecipe } = window.dataStore;
   return `<div>
@@ -162,25 +219,37 @@ function SearchRecipes() {
       type="text" 
       value="${searchedRecipe}" 
       placeholder="enter recipe (ex: rice)" 
-      onchange="window.dataStore.searchedRecipe = this.value; window.renderApp()"
+      onchange="performSearchRecipes(this.value)"
     />
   </div>`;
 }
 
 function RenderRecipes() {
-  const recipesData = recipesByName.results;
-  const { searchedRecipe } = window.dataStore;
+  const { searchedRecipe, isDataLoading, error, detailedRecipesInfo } = window.dataStore;
   let content = '';
 
-  content = searchedRecipe
-    ? `
-  ${recipesData
-    .filter(recipe => recipe.title.toLowerCase().includes(searchedRecipe))
-    .map(recipeObj => `<div>${recipeObj.title}</div>`)
-    .join('')}
-  `
-    : '';
-  return content ? `<div>${content}</div>` : '';
+  //initial state
+  if (searchedRecipe === '') {
+    content = 'Please enter recipe name.';
+  } else {
+    //loading state
+    if (isDataLoading) {
+      content = 'Loading...';
+    }
+    if (error) {
+      content = error;
+    }
+    if (isCurrentRecipeInCache()) {
+      content = `${window.dataStore.recipesInCache[searchedRecipe].results
+        .map(result => `<div>${result.title}</div>`)
+        .join('')}`;
+    }
+
+    //error state
+    //results state
+  }
+
+  return `<div>${content}</div>`;
 }
 
 function renderApp() {
