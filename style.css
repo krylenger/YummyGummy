@@ -2,12 +2,15 @@
   margin: 0px;
 }
 
-.apps {
+img {
+  height: 100px;
+}
+
+.appContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: row;
-  margin: 10px;
   background: yellow;
 }
 
@@ -20,11 +23,18 @@
   display: flex;
   flex-direction: column;
   width: 50%;
-  min-height: 70vh;
+  background: #0ca163;
+}
+
+.getRecipeByIngredientsContainer {
+  background: #0accd3;
+  width: 50%;
+}
+
+.magicFridgeRecipe {
   background: red;
 }
 
-.RenderDailyMealPlanContainer {
-  max-height: 50%;
-  background: green;
+.searchForRecipeByNameContainer {
+  background: orangered;
 }
