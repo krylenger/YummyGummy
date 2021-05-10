@@ -35,6 +35,16 @@ img {
   background: rgb(12, 161, 99);
 }
 
+.getMealPlanByGoalHeader {
+  background: rgb(221, 23, 221);
+  min-height: 230px;
+}
+
+.mealDescription {
+  min-height: 150px;
+  background: black;
+}
+
 .RenderDailyMealPlanContainer {
   // max-height: 50%;
   // background: green;
@@ -45,10 +55,27 @@ img {
   width: 50%;
 }
 
+.getRecipeByIngredientsHeader {
+  background: grey;
+  min-height: 230px;
+}
+
 .magicFridgeRecipe {
   background: red;
 }
 
 .searchForRecipeByNameContainer {
   background: orangered;
+}
+
+.cardsContainer {
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+}
+
+.recipeCard {
+  border: 1px solid black;
+  border-radius: 5px;
+  max-width: 300px;
 }

@@ -26,9 +26,24 @@ img {
   background: #0ca163;
 }
 
+.getMealPlanByGoalHeader {
+  background: #dd17dd;
+  min-height: 230px;
+}
+
+.mealDescription {
+  min-height: 150px;
+  background: black;
+}
+
 .getRecipeByIngredientsContainer {
   background: #0accd3;
   width: 50%;
+}
+
+.getRecipeByIngredientsHeader {
+  background: grey;
+  min-height: 230px;
 }
 
 .magicFridgeRecipe {
@@ -37,4 +52,10 @@ img {
 
 .searchForRecipeByNameContainer {
   background: orangered;
+}
+
+.recipeCard {
+  border: 1px solid black;
+  border-radius: 5px;
+  max-width: 300px;
 }
