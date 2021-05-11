@@ -10,6 +10,7 @@ window.confirmButtonCB = confirmButtonCB;
 window.performSearchRecipes = performSearchRecipes;
 window.validateAndLoadData = validateAndLoadData;
 window.getDailyMealPlan = getDailyMealPlan;
+window.openModalRecipe = openModalRecipe;
 
 window.dataStore = {
   recipesInCache: [],
@@ -25,6 +26,7 @@ window.dataStore = {
   isDataLoading: false,
   error: null,
   dailyMealPlan: '',
+  isModalRecipeOpened: false,
 };
 
 if (module.hot) {
@@ -71,10 +73,17 @@ function GetMealPlanByGoal() {
   </div>`;
 }
 
+function FillFridge() {
+  return `<div class="${styles.getRecipeByIngredientsHeader}">
+    ${AddFridgeIngredients()}
+    ${RenderFridgeIngredients()}
+  </div>`;
+}
+
 function GetRecipeByIngredients() {
   return `<div class="${styles.getRecipeByIngredientsContainer}">
+    
     ${FillFridge()}
-    ${RenderFridgeIngredients()}
     ${RenderFridgeRecipes()}
   </div>`;
 }
@@ -114,7 +123,7 @@ function GoalSwitch(currentGoal, setCurrentGoal) {
 
 function SetGoal() {
   const { currentGoal, usersWeight } = window.dataStore;
-  return `<div>
+  return `<div class="${styles.getMealPlanByGoalHeader}">
     <h2>Do you want to lose or to gain weight?</h2>
     ${GoalSwitch(currentGoal, setCurrentGoal)}
     <p>In case you want to lose weight, we're going to create a meal plan with a decreased amount of carbs.</p>
@@ -161,6 +170,7 @@ function loadDailyMealPlan() {
 function RenderDailyMealPlan() {
   const { dailyMealPlan, detailedMealPlanRecipes } = window.dataStore;
   let content = 'Please set your goal.';
+  let contentDescription = '';
   if (dailyMealPlan) {
     const {
       meals,
@@ -170,28 +180,23 @@ function RenderDailyMealPlan() {
       .map(({ id, title }) => `<div><div>${id}</div><div>${title}</div></div>`)
       .join('');
     content += `<div><p>Calories: ${calories}</p><p>protein: ${protein}</p><p>fat: ${fat}</p><p>carbohydrates: ${carbohydrates}</p></div>`;
-  }
-  if (detailedMealPlanRecipes.length) {
-    content = `${window.dataStore.detailedMealPlanRecipes
-      .map(({ title, image, instructions, readyInMinutes, nutrition: { nutrients } }) => {
-        const caloriesAmount = getNutrientAmount('Calories', nutrients);
-        const fatAmount = getNutrientAmount('Fat', nutrients);
-        const carbohydratesAmount = getNutrientAmount('Carbohydrates', nutrients);
-        const proteinAmount = getNutrientAmount('Protein', nutrients);
-        let content = `<div><h1>${title}</h1>
-        <image src="${image}" alt="${title}"/>
-        <p>Ready in ${readyInMinutes} minutes.</p>
-        <p>Calories: ${caloriesAmount}</p>
-        <p>Protein: ${proteinAmount}</p>
-        <p>Fat: ${fatAmount}</p>
-        <p>Carbohydrates: ${carbohydratesAmount}</p>
-        </div></div>`;
-        return content;
-      })
-      .join('')}`;
+    contentDescription = `<h3>Meal Description</h3><div>
+    <p>Here is your daily meal plan. Enjoy it!
+    <p>Calories: ${calories}</p>
+    <p>Protein: ${protein}</p>
+    <p>Fat: ${fat}</p>
+    <p>Carbohydrates: ${carbohydrates}</p></div>`;
   }
 
-  return `<div class="${styles.RenderDailyMealPlanContainer}">${content}</div>`;
+  if (detailedMealPlanRecipes.length) {
+    const recipeCards = window.dataStore.detailedMealPlanRecipes.map(detailedRecipeCardData => {
+      const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
+      return RecipeCard(preparedRecipeCardData);
+    });
+    content = recipeCards.join('');
+  }
+
+  return `<div class="${styles.RenderDailyMealPlanContainer}"><div class="${styles.mealDescription}">${contentDescription}</div><div class="${styles.recipeCardsContainer}">${content}</div></div>`;
 }
 
 function FillFridgeOnChangeCB(value) {
@@ -206,7 +211,7 @@ function FillFridgeOnChangeCB(value) {
   }
 }
 
-function FillFridge() {
+function AddFridgeIngredients() {
   return `<div>
       <h2>What's in your fridge?</h2>
       <p>Enter up to 5 products you have in the fridge to cook the best meal. Example: apple, milk, sugar. </p>
@@ -272,6 +277,7 @@ function RenderFridgeIngredients() {
 function RenderFridgeRecipes() {
   const { isMagicFridge, magicFridgeRecipes, magicFridgeDetailedRecipes } = window.dataStore;
   let content = '';
+  let contentDescription = '';
   if (isMagicFridge) {
     content = `
       ${magicFridgeRecipes
@@ -281,26 +287,16 @@ function RenderFridgeRecipes() {
         )
         .join('')}
     `;
+    contentDescription = `<h3>Here we go!</h3><p>We have tried to select the best fitting recipes based on your fridge ingredients. Some ingredients may be missing so your imagination can help you how to change them and cook the best meal ever!</p>`;
   }
   if (magicFridgeDetailedRecipes.length) {
-    content = `${magicFridgeDetailedRecipes
-      .map(({ title, image, instructions, readyInMinutes, nutrition: { nutrients } }) => {
-        const caloriesAmount = getNutrientAmount('Calories', nutrients);
-        const fatAmount = getNutrientAmount('Fat', nutrients);
-        const carbohydratesAmount = getNutrientAmount('Carbohydrates', nutrients);
-        const proteinAmount = getNutrientAmount('Protein', nutrients);
-        let cardContent = `<div><h1>${title}</h1>
-        <image src="${image}" alt="${title}"/>
-        <p>Calories: ${caloriesAmount}</p>
-        <p>Protein: ${proteinAmount}</p>
-        <p>Fat: ${fatAmount}</p>
-        <p>Carbohydrates: ${carbohydratesAmount}</p>
-        </div></div>`;
-        return cardContent;
-      })
-      .join('')}`;
+    const recipeCards = window.dataStore.magicFridgeDetailedRecipes.map(detailedRecipeCardData => {
+      const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
+      return RecipeCard(preparedRecipeCardData);
+    });
+    content = recipeCards.join('');
   }
-  return `<div class="aaa">${content}</div>`;
+  return `<div><div class="${styles.mealDescription}">${contentDescription}</div><div class="${styles.recipeCardsContainer}">${content}</div></div>`;
 }
 
 function isCurrentRecipeInCache() {
@@ -407,29 +403,73 @@ function RenderRecipes() {
     }
     //results state
     if (isCurrentRecipeInCache()) {
-      content = `${window.dataStore.detailedRecipesInfo
-        .map(({ title, image, instructions, readyInMinutes, nutrition: { nutrients } }) => {
-          const caloriesAmount = getNutrientAmount('Calories', nutrients);
-          const fatAmount = getNutrientAmount('Fat', nutrients);
-          const carbohydratesAmount = getNutrientAmount('Carbohydrates', nutrients);
-          const proteinAmount = getNutrientAmount('Protein', nutrients);
-          let cardContent = `<div><h1>${title}</h1>
-          <image src="${image}" alt="${title}"/>
-          <p>Calories: ${caloriesAmount}</p>
-          <p>Protein: ${proteinAmount}</p>
-          <p>Fat: ${fatAmount}</p>
-          <p>Carbohydrates: ${carbohydratesAmount}</p>
-          </div></div>`;
-          return cardContent;
-        })
-        .join('')}`;
+      const recipeCards = window.dataStore.detailedRecipesInfo.map(detailedRecipeCardData => {
+        const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
+        return RecipeCard(preparedRecipeCardData);
+      });
+      content = recipeCards.join('');
     }
   }
   return `<div>${content}</div>`;
 }
 
+function getPreparedRecipeCardData({
+  title,
+  image,
+  instructions,
+  readyInMinutes,
+  nutrition: { nutrients },
+}) {
+  const caloriesAmount = getNutrientAmount('Calories', nutrients);
+  const fatAmount = getNutrientAmount('Fat', nutrients);
+  const carbohydratesAmount = getNutrientAmount('Carbohydrates', nutrients);
+  const proteinAmount = getNutrientAmount('Protein', nutrients);
+
+  return {
+    title,
+    image,
+    instructions,
+    readyInMinutes,
+    nutrients,
+    caloriesAmount,
+    fatAmount,
+    carbohydratesAmount,
+    proteinAmount,
+  };
+}
+
+function openModalRecipe(targetElem) {
+  const { isModalRecipeOpened } = window.dataStore;
+  window.dataStore.isModalRecipeOpened = true;
+  window.renderApp();
+}
+
+function RecipeCard({
+  title,
+  image,
+  instructions,
+  readyInMinutes,
+  nutrients,
+  caloriesAmount,
+  fatAmount,
+  carbohydratesAmount,
+  proteinAmount,
+}) {
+  return `<div class="${styles.recipeCard}" onclick="window.openModalRecipe(this);"><h4>${title}</h4>
+  <image class="${styles.recipeCard_image}"src="${image}" alt="${title}"/>
+  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Calories:</p> <p>${caloriesAmount}</p></div>
+  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Protein:</p> <p>${proteinAmount}</p></div>
+  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Fat:</p> <p>${fatAmount}</p></div>
+  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Carbohydrates:</p> <p>${carbohydratesAmount}</p></div>
+  </div>`;
+}
+
 function renderApp() {
   appRoot.innerHTML = App();
+}
+
+function ModalRecipe() {
+  return `<div class="${styles.modalRecipeContainer}">hi</div>`;
 }
 
 function App() {
@@ -438,6 +478,7 @@ function App() {
     ${GetMealPlanByGoal()}
     ${GetRecipeByIngredients()}
     ${SearchForRecipesByName()}
+    ${window.dataStore.isModalRecipeOpened ? ModalRecipe() : ``}
   </div>`;
 }
 
