@@ -24,7 +24,6 @@ img {
   background: #0ca163;
   min-height: 230px;
   padding: 20px;
-  border-bottom: 1px solid black;
 }
 
 .getMealPlanByGoal {
@@ -48,15 +47,10 @@ img {
   min-height: 230px;
   padding: 20px;
   background: #0accd3;
-  border-bottom: 1px solid black;
 }
 
 .magicFridgeRecipe {
   background: red;
-}
-
-.searchForRecipeByNameContainer {
-  background: orangered;
 }
 
 .recipeCardsContainer {
