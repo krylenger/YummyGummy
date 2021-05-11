@@ -170,7 +170,7 @@ function loadDailyMealPlan() {
 
 function RenderDailyMealPlan() {
   const { dailyMealPlan, detailedMealPlanRecipes } = window.dataStore;
-  let content = 'Please set your goal.';
+  let content = '';
   let contentDescription = '';
   if (dailyMealPlan) {
     const {
