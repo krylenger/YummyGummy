@@ -27,6 +27,7 @@ window.dataStore = {
   error: null,
   dailyMealPlan: '',
   isModalRecipeOpened: false,
+  modalRecipeTemplate: '',
 };
 
 if (module.hot) {
@@ -439,7 +440,8 @@ function getPreparedRecipeCardData({
 }
 
 function openModalRecipe(targetElem) {
-  const { isModalRecipeOpened } = window.dataStore;
+  window.dataStore.modalRecipeTemplate = targetElem.innerHTML;
+  window.dataStore.modalRecipeTemplate += `<button onclick="window.dataStore.isModalRecipeOpened = false; window.renderApp();">Close Modal</button>`;
   window.dataStore.isModalRecipeOpened = true;
   window.renderApp();
 }
@@ -469,7 +471,7 @@ function renderApp() {
 }
 
 function ModalRecipe() {
-  return `<div class="${styles.modalRecipeContainer}">hi</div>`;
+  return `<div class="${styles.modalRecipeContainer}">${window.dataStore.modalRecipeTemplate}</div>`;
 }
 
 function App() {
