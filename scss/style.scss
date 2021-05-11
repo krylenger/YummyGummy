@@ -23,8 +23,16 @@ img {
 .header {
   text-align: center;
   width: 100%;
+  padding: 10px 0px;
   // height: 20px;ß¡
   // max-height: 20px;
+}
+
+.getMealPlanByGoalHeader {
+  background: rgb(12, 161, 99);
+  min-height: 230px;
+  padding: 20px;
+  border-bottom: 1px solid black;
 }
 
 .getMealPlanByGoal {
@@ -35,14 +43,9 @@ img {
   background: rgb(12, 161, 99);
 }
 
-.getMealPlanByGoalHeader {
-  background: rgb(221, 23, 221);
-  min-height: 230px;
-}
-
 .mealDescription {
-  min-height: 150px;
-  background: black;
+  min-height: 100px;
+  padding: 10px;
 }
 
 .RenderDailyMealPlanContainer {
@@ -56,8 +59,10 @@ img {
 }
 
 .getRecipeByIngredientsHeader {
-  background: grey;
   min-height: 230px;
+  padding: 20px;
+  background: rgb(10, 204, 211);
+  border-bottom: 1px solid black;
 }
 
 .magicFridgeRecipe {
@@ -74,8 +79,43 @@ img {
   // align-items: center;
 }
 
+.recipeCardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
 .recipeCard {
+  display: flex;
+  flex-direction: column;
+  max-width: 150px;
+  margin: 10px;
+  padding: 10px;
   border: 1px solid black;
   border-radius: 5px;
-  max-width: 300px;
+  box-shadow: 0px 0px 5px 5px  rgba(70, 69, 69, 0.548);
+  background: rgba(255, 255, 255, 0.9);
+
+  &:hover {
+    cursor: pointer;
+  }
+  
+}
+
+
+
+.recipeCard_image {
+  border: 2px solid grey;
+  border-radius: 10px;
+}
+
+.recipeCard_nutrientInfoLine {
+  display: flex;
+  justify-content: space-between;
+  // background: rgb(10, 204, 211);
+
+}
+
+.modalRecipeContainer {
+  background: red;
 }
