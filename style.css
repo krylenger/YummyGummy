@@ -7,21 +7,25 @@ img {
 }
 
 .appContainer {
+  height: auto;
+  min-height: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: row;
   background: yellow;
+  background-image: linear-gradient(to right, #00ccff, #00ff6e);
 }
 
 .header {
   text-align: center;
   width: 100%;
   padding: 10px 0px;
+  border-bottom: 5px dotted white;
+  color: #2f3030;
 }
 
 .getMealPlanByGoalHeader {
-  background: #0ca163;
   min-height: 230px;
   padding: 20px;
 }
@@ -29,8 +33,8 @@ img {
 .getMealPlanByGoal {
   display: flex;
   flex-direction: column;
-  width: 50%;
-  background: #0ca163;
+  width: 48%;
+  border-right: 5px dotted white;
 }
 
 .mealDescription {
@@ -39,23 +43,35 @@ img {
 }
 
 .getRecipeByIngredientsContainer {
-  background: #0accd3;
   width: 50%;
 }
 
 .getRecipeByIngredientsHeader {
   min-height: 230px;
   padding: 20px;
-  background: #0accd3;
 }
 
 .magicFridgeRecipe {
   background: red;
 }
 
+.searchForRecipeByNameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.searchForRecipeByNameContainer_header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .recipeCardsContainer {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .recipeCard {
@@ -71,6 +87,8 @@ img {
 }
 .recipeCard:hover {
   cursor: pointer;
+  transform: scale(1.02);
+  transition-duration: 0.2s;
 }
 
 .recipeCard_image {
@@ -93,5 +111,21 @@ img {
   left: 0px;
   width: 100%;
   height: 100%;
+  padding: 0px 10px;
   background: #c5c5c5;
+}
+
+.modalRecipeContainer_image {
+  border-radius: 5px;
+  border: 3px solid whitesmoke;
+}
+
+.modalRecipeContainer_nutrientsContainer {
+  width: 50%;
+}
+
+.modalRecipeContainer_instructions {
+  padding: 0px 20px;
+  color: #353535;
+  font-style: italic;
 }

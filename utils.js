@@ -1,5 +1,5 @@
 export function getSearchRecipeUrl(searchedWord) {
-  return `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchedWord}&number=2`;
+  return `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchedWord}&number=5`;
 }
 
 export function getUrlOfDetailedRecipe(id) {
