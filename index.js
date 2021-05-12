@@ -14,9 +14,9 @@ window.openModalRecipe = openModalRecipe;
 
 window.dataStore = {
   recipesInCache: [],
-  currentGoal: 'lose',
+  currentGoal: 'gain',
   magicFridgeItems: [],
-  usersWeight: '22',
+  usersWeight: '77',
   searchedRecipe: '',
   detailedRecipesInfo: [],
   detailedMealPlanRecipes: [],
@@ -257,18 +257,19 @@ function confirmButtonCB() {
 }
 
 function RenderFridgeIngredients() {
+  let content = '';
   let confirmButton = '';
   if (window.dataStore.magicFridgeItems.length > 0) {
-    confirmButton = `<button onclick="window.confirmButtonCB()" >Magic time!</button>`;
+    confirmButton = `<button class="${styles.fridgeIngredientsListContainer_magicButton}" onclick="window.confirmButtonCB()" >Magic</button>`;
   }
-  return `${window.dataStore.magicFridgeItems
+  content = `${window.dataStore.magicFridgeItems
     .map(
       fridgeItem => `<div>
   ${fridgeItem}
   </div>`,
     )
-    .join('')}
-    ${confirmButton}`;
+    .join('')}`;
+  return `<div class="${styles.fridgeIngredientsListContainer}"><div class="${styles.fridgeIngredientsListContainer_inner}">${content}</div>${confirmButton}</div>`;
 }
 
 function RenderFridgeRecipes() {
@@ -524,6 +525,7 @@ function CreateModalRecipeWindow({
   proteinAmount,
 }) {
   return `<div class="${styles.modalRecipeContainer}">
+  <div class="${styles.modalRecipeContainerInner}">
   <h1>${title}</h1>
   <div class="${styles.modalRecipeContainer_image}"><img  src="${image}" alt="${title}"></div>
   <div class="${styles.modalRecipeContainer_nutrientsContainer}">
@@ -534,7 +536,7 @@ function CreateModalRecipeWindow({
   </div>
   <p class="${styles.modalRecipeContainer_instructions}">${instructions}</p>
   <p>Ready in: ${readyInMinutes} minutes.</p>
-  <button onclick="window.dataStore.isModalRecipeOpened = false; window.renderApp();">Close Modal</button></div>`;
+  <button onclick="window.dataStore.isModalRecipeOpened = false; window.renderApp();">Close Modal</button></div></div>`;
 }
 
 function RenderModalRecipe() {
