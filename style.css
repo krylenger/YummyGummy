@@ -33,6 +33,14 @@ img {
   padding: 20px;
 }
 
+.getMealPlanByGoalHeader_h2 {
+  padding: 0px 0px 10px 0px;
+}
+
+.getMealPlanByGoalHeader_p {
+  padding: 5px 0px 5px 0px;
+}
+
 .getMealPlanByGoal {
   display: flex;
   flex-direction: column;
@@ -54,6 +62,10 @@ img {
   padding: 20px;
 }
 
+.getRecipeByIngredientsHeader_p {
+  padding: 10px 0px 5px 0px;
+}
+
 .fridgeIngredientsListContainer {
   display: flex;
   flex-direction: column;
@@ -61,8 +73,30 @@ img {
   background-image: url('./assets/fridge.png');
   background-repeat: no-repeat;
   background-size: contain;
-  padding: 7px 0px 0px 41px;
+  padding: 7px 0px 0px 10px;
   font-weight: 900;
+}
+
+.fridgeItemContainer {
+  padding-left: 9px;
+}
+
+.fridgeItemContainer_button {
+  border: none;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0);
+  padding: 0px 3px;
+  color: rgba(255, 0, 0, 0.9);
+}
+.fridgeItemContainer_button:hover {
+  cursor: pointer;
+}
+
+.fridgeItemContainer_label {
+  padding-left: 6px;
+}
+.fridgeItemContainer_label:hover {
+  cursor: pointer;
 }
 
 .fridgeIngredientsListContainer_inner {
@@ -72,7 +106,7 @@ img {
 .fridgeIngredientsListContainer_magicButton {
   position: relative;
   top: 1px;
-  left: -2px;
+  left: 28px;
   width: 49px;
   background: white;
   border-radius: 5px;

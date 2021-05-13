@@ -1,27 +1,33 @@
 // Start from here
-import { getSearchRecipeUrl, getUrlOfDetailedRecipe } from './utils';
+import {
+  getSearchRecipeUrl,
+  getUrlOfDetailedRecipe,
+  getNutrientAmount,
+  calculateMaxCalories,
+  getRapidAPIFetchOptionsData,
+} from './utils';
 import styles from './style';
 
 const appRoot = document.getElementById('app-root');
 
 window.renderApp = renderApp;
 window.FillFridgeOnChangeCB = FillFridgeOnChangeCB;
-window.confirmButtonCB = confirmButtonCB;
+window.magicButtonCB = magicButtonCB;
 window.performSearchRecipes = performSearchRecipes;
 window.validateAndLoadData = validateAndLoadData;
 window.getDailyMealPlan = getDailyMealPlan;
 window.openModalRecipe = openModalRecipe;
+window.removeFridgeItem = removeFridgeItem;
 
 window.dataStore = {
-  recipesInCache: [],
-  currentGoal: 'gain',
+  currentGoal: '',
+  usersWeight: '',
   magicFridgeItems: [],
-  usersWeight: '77',
   searchedRecipe: '',
-  detailedRecipesInfo: [],
+  recipesInCache: [],
   detailedMealPlanRecipes: [],
-  magicFridgeRecipes: [],
-  magicFridgeDetailedRecipes: [],
+  detailedMagicFridgeRecipes: [],
+  detailedSearchedRecipes: [],
   isMagicFridge: false,
   isDataLoading: false,
   error: null,
@@ -34,37 +40,8 @@ if (module.hot) {
   module.hot.accept();
 }
 
-function getNutrientAmount(nutrientName, arrayOfAllNutrients) {
-  let searchedNutrient = arrayOfAllNutrients.find(nutrient => nutrient.name === nutrientName);
-  return searchedNutrient.amount;
-}
-
-function calculateMaxCalories(currentGoal, usersWeight) {
-  usersWeight = parseInt(usersWeight);
-  let caloriesAmount;
-
-  if (currentGoal === 'lose') {
-    if (usersWeight <= 50) {
-      caloriesAmount = usersWeight * 10 + 1200 - 200;
-    } else if (usersWeight > 50 && usersWeight <= 80) {
-      caloriesAmount = usersWeight * 10 + 1400 - 200;
-    } else if (usersWeight > 80 && usersWeight <= 110) {
-      caloriesAmount = usersWeight * 10 + 1600 - 200;
-    } else {
-      caloriesAmount = usersWeight * 10 + 1800 - 200;
-    }
-  } else {
-    if (usersWeight <= 50) {
-      caloriesAmount = usersWeight * 10 + 1200;
-    } else if (usersWeight > 50 && usersWeight <= 80) {
-      caloriesAmount = usersWeight * 10 + 1400;
-    } else if (usersWeight > 80 && usersWeight <= 110) {
-      caloriesAmount = usersWeight * 10 + 1600;
-    } else {
-      caloriesAmount = usersWeight * 10 + 1800;
-    }
-  }
-  return caloriesAmount;
+function renderApp() {
+  appRoot.innerHTML = App();
 }
 
 function GetMealPlanByGoal() {
@@ -124,10 +101,14 @@ function GoalSwitch(currentGoal, setCurrentGoal) {
 function SetGoal() {
   const { currentGoal, usersWeight } = window.dataStore;
   return `<div class="${styles.getMealPlanByGoalHeader}">
-    <h2>Do you want to lose or to gain weight?</h2>
+    <h2 class="${styles.getMealPlanByGoalHeader_h2}">Do you want to lose or to gain weight?</h2>
     ${GoalSwitch(currentGoal, setCurrentGoal)}
-    <p>In case you want to lose weight, we're going to create a meal plan with a decreased amount of carbs.</p>
-    <p>If your goal is to gain muscles - we're going to include more high protein dishes.
+    <p class="${
+      styles.getMealPlanByGoalHeader_p
+    }">In case you want to lose weight, we're going to create a meal plan with a decreased amount of carbs.</p>
+    <p class="${
+      styles.getMealPlanByGoalHeader_p
+    }">If your goal is to gain muscles - we're going to include more high protein dishes.
     <h4>What's your weight?</h4>
     <input type="number" value="${usersWeight}" placeholder="your weight" onchange="window.dataStore.usersWeight = this.value; window.renderApp();">
     <button onclick="window.getDailyMealPlan()">Submit</button>
@@ -143,20 +124,16 @@ function getDailyMealPlan() {
 
 function loadDailyMealPlan() {
   const { currentGoal, usersWeight } = window.dataStore;
-
   const maxCalories = calculateMaxCalories(currentGoal, usersWeight);
 
   return fetch(
     `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate?timeFrame=day&targetCalories=${maxCalories}`,
-    {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': '46c316dbf2msh22acfa650b43ca2p1df703jsnc4386fc8ea30',
-        'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-      },
-    },
+    getRapidAPIFetchOptionsData(),
   )
-    .then(response => response.json())
+    .then(response => {
+      if (response.ok) return response.json();
+      throw new Error(`Error` + response.status + response.json);
+    })
     .then(data => {
       window.dataStore.dailyMealPlan = data;
       return data;
@@ -211,7 +188,7 @@ function FillFridgeOnChangeCB(value) {
 function AddFridgeIngredients() {
   return `<div>
       <h2>What's in your fridge?</h2>
-      <p>Enter up to 5 products you have in the fridge to cook the best meal. Example: apple, milk, sugar. </p>
+      <p class="${styles.getRecipeByIngredientsHeader_p}">Enter up to 5 products you have in the fridge to cook the best meal. Example: apple, milk, sugar. </p>
       <input 
         type="text" 
         placeholder="what is in your fridge?" 
@@ -230,65 +207,59 @@ function loadMagicFridgeRecipes() {
   );
   return fetch(
     `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientsQueryString}&number=4&ignorePantry=false&ranking=1`,
-    {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': '46c316dbf2msh22acfa650b43ca2p1df703jsnc4386fc8ea30',
-        'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-      },
-    },
+    getRapidAPIFetchOptionsData(),
   )
-    .then(response => response.json())
-    .then(data => {
-      window.dataStore.magicFridgeRecipes = data;
-      return data;
+    .then(response => {
+      if (response.ok) return response.json();
+      throw new Error(`Error` + response.status + response.json);
     })
+    .then(data => data)
     .catch(err => {
       window.dataStore.err = err;
     })
     .finally(window.renderApp);
 }
 
-function confirmButtonCB() {
+function magicButtonCB() {
   window.dataStore.isMagicFridge = true;
   let promise = loadMagicFridgeRecipes();
-  promise.then(data => loadDetailedRecipesInfo({ results: data }, 'magicFridgeDetailedRecipes'));
+  promise.then(data => loadDetailedRecipesInfo({ results: data }, 'detailedMagicFridgeRecipes'));
   window.renderApp();
+}
+
+function removeFridgeItem(id) {
+  window.dataStore.magicFridgeItems = window.dataStore.magicFridgeItems.filter(item => item !== id);
+  window.renderApp();
+}
+
+function FridgeItem(fridgeItemData) {
+  return `<div class="${styles.fridgeItemContainer}">
+  <button class="${styles.fridgeItemContainer_button}" id="${fridgeItemData}" onclick="window.removeFridgeItem(this.id);">x</button>
+  <label class="${styles.fridgeItemContainer_label}" for="${fridgeItemData}">${fridgeItemData}</label>
+  </div>`;
 }
 
 function RenderFridgeIngredients() {
   let content = '';
   let confirmButton = '';
   if (window.dataStore.magicFridgeItems.length > 0) {
-    confirmButton = `<button class="${styles.fridgeIngredientsListContainer_magicButton}" onclick="window.confirmButtonCB()" >Magic</button>`;
+    confirmButton = `<button class="${styles.fridgeIngredientsListContainer_magicButton}" onclick="window.magicButtonCB()" >Magic</button>`;
   }
   content = `${window.dataStore.magicFridgeItems
-    .map(
-      fridgeItem => `<div>
-  ${fridgeItem}
-  </div>`,
-    )
+    .map(fridgeItemData => FridgeItem(fridgeItemData))
     .join('')}`;
   return `<div class="${styles.fridgeIngredientsListContainer}"><div class="${styles.fridgeIngredientsListContainer_inner}">${content}</div>${confirmButton}</div>`;
 }
 
 function RenderFridgeRecipes() {
-  const { isMagicFridge, magicFridgeRecipes, magicFridgeDetailedRecipes } = window.dataStore;
+  const { isMagicFridge, detailedMagicFridgeRecipes } = window.dataStore;
   let content = '';
   let contentDescription = '';
   if (isMagicFridge) {
-    content = `
-      ${magicFridgeRecipes
-        .map(
-          ({ title, image }) =>
-            `<div class="magicFridgeRecipe"><p>${title}</p><img src="${image}" alt="oops"></div>`,
-        )
-        .join('')}
-    `;
     contentDescription = `<h3>Here we go!</h3><p>We have tried to select the best fitting recipes based on your fridge ingredients. Some ingredients may be missing so your imagination can help you how to change them and cook the best meal ever!</p>`;
   }
-  if (magicFridgeDetailedRecipes.length) {
-    const recipeCards = window.dataStore.magicFridgeDetailedRecipes.map(detailedRecipeCardData => {
+  if (detailedMagicFridgeRecipes.length) {
+    const recipeCards = window.dataStore.detailedMagicFridgeRecipes.map(detailedRecipeCardData => {
       const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
       return RecipeCard(preparedRecipeCardData);
     });
@@ -304,15 +275,7 @@ function isCurrentRecipeInCache() {
 
 function loadDetailedRecipesInfo({ results }, whereToLoad) {
   const urlsOfDetailedRecipes = results.map(result => getUrlOfDetailedRecipe(result.id));
-  let requests = urlsOfDetailedRecipes.map(url =>
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': `${process.env.YUMMY_SPOON_API_KEY}`,
-        'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-      },
-    }),
-  );
+  let requests = urlsOfDetailedRecipes.map(url => fetch(url, getRapidAPIFetchOptionsData()));
   return Promise.all(requests)
     .then(responses => Promise.all(responses.map(r => r.json())))
     .then(data => {
@@ -329,14 +292,11 @@ function validateAndLoadData() {
   const url = getSearchRecipeUrl(searchedRecipe);
 
   if (!isCurrentRecipeInCache()) {
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': `${process.env.YUMMY_SPOON_API_KEY}`,
-        'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-      },
-    })
-      .then(response => response.json())
+    return fetch(url, getRapidAPIFetchOptionsData())
+      .then(response => {
+        if (response.ok) return response.json();
+        throw new Error(`Error` + response.status + response.json);
+      })
       .then(data => ({ data }));
   }
   return Promise.resolve({});
@@ -355,7 +315,7 @@ function performSearchRecipes(recipeName) {
         window.dataStore.error = error;
       } else if (data) {
         window.dataStore.recipesInCache[recipeName] = data;
-        loadDetailedRecipesInfo(data, 'detailedRecipesInfo');
+        loadDetailedRecipesInfo(data, 'detailedSearchedRecipes');
       }
     })
     .catch(err => {
@@ -382,7 +342,7 @@ function RenderRecipes() {
     searchedRecipe,
     isDataLoading,
     error,
-    detailedRecipesInfo,
+    detailedSearchedRecipes,
     recipesInCache,
   } = window.dataStore;
   let content = '';
@@ -401,7 +361,7 @@ function RenderRecipes() {
     }
     //results state
     if (isCurrentRecipeInCache()) {
-      const recipeCards = window.dataStore.detailedRecipesInfo.map(detailedRecipeCardData => {
+      const recipeCards = window.dataStore.detailedSearchedRecipes.map(detailedRecipeCardData => {
         const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
         return RecipeCard(preparedRecipeCardData);
       });
@@ -441,16 +401,16 @@ function getPreparedRecipeCardData({
 function getModalRecipeData(targetId) {
   const {
     detailedMealPlanRecipes,
-    detailedRecipesInfo,
-    magicFridgeDetailedRecipes,
+    detailedSearchedRecipes,
+    detailedMagicFridgeRecipes,
   } = window.dataStore;
   let modalRecipeData = '';
   if (detailedMealPlanRecipes.find(({ id }) => id == targetId)) {
     return detailedMealPlanRecipes.find(({ id }) => id == targetId);
-  } else if (detailedRecipesInfo.find(({ id }) => id == targetId)) {
-    return detailedRecipesInfo.find(({ id }) => id == targetId);
-  } else if (magicFridgeDetailedRecipes.find(({ id }) => id == targetId)) {
-    return magicFridgeDetailedRecipes.find(({ id }) => id == targetId);
+  } else if (detailedSearchedRecipes.find(({ id }) => id == targetId)) {
+    return detailedSearchedRecipes.find(({ id }) => id == targetId);
+  } else if (detailedMagicFridgeRecipes.find(({ id }) => id == targetId)) {
+    return detailedMagicFridgeRecipes.find(({ id }) => id == targetId);
   }
   return modalRecipeData;
 }
@@ -482,10 +442,6 @@ function RecipeCard({
   <div class="${styles.recipeCard_nutrientInfoLine}"><p>Fat:</p> <p>${fatAmount}</p></div>
   <div class="${styles.recipeCard_nutrientInfoLine}"><p>Carbohydrates:</p> <p>${carbohydratesAmount}</p></div>
   </div>`;
-}
-
-function renderApp() {
-  appRoot.innerHTML = App();
 }
 
 function getPreparedModalRecipeData({
