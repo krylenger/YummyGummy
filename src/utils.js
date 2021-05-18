@@ -1,11 +1,3 @@
-export function getSearchRecipeUrl(searchedWord) {
-  return `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchedWord}&number=5`;
-}
-
-export function getUrlOfDetailedRecipe(id) {
-  return `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information?includeNutrition=true`;
-}
-
 export function getNutrientAmount(nutrientName, arrayOfAllNutrients) {
   let searchedNutrient = arrayOfAllNutrients.find(nutrient => nutrient.name === nutrientName);
   return searchedNutrient.amount;
@@ -39,12 +31,7 @@ export function calculateMaxCalories(currentGoal, usersWeight) {
   return caloriesAmount;
 }
 
-export function getRapidAPIFetchOptionsData() {
-  return {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': `${process.env.rapidApiKey}`,
-      'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-    },
-  };
+export function isCurrentRecipeInCache() {
+  const { recipesInCache, searchedRecipe } = window.dataStore;
+  return Boolean(recipesInCache[searchedRecipe]);
 }
