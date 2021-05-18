@@ -63,9 +63,13 @@ export function loadMagicFridgeRecipes() {
     })
     .then(data => {
       if (!data.length) {
-        // console.log('eroor');
+        window.dataStore.errorInTheFridge = true;
+        return data;
+      } else {
+        window.dataStore.errorInTheFridge = false;
+        window.dataStore.isMagicFridge = true;
+        return data;
       }
-      return data;
     })
     .catch(err => {
       window.dataStore.err = err;
@@ -85,7 +89,6 @@ export function loadDetailedRecipesInfo({ results }, whereToLoad) {
       window.dataStore[whereToLoad] = data;
     })
     .catch(error => {
-      alert(error);
       window.dataStore.error = 'Error inside loadDetailedRecipesInfo';
     })
     .finally(window.renderApp);

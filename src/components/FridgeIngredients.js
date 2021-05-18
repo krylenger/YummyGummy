@@ -5,10 +5,8 @@ import { loadMagicFridgeRecipes, loadDetailedRecipesInfo } from '../data/spoonac
 window.magicButtonCB = magicButtonCB;
 
 function magicButtonCB() {
-  window.dataStore.isMagicFridge = true;
   let promise = loadMagicFridgeRecipes();
   promise.then(data => loadDetailedRecipesInfo({ results: data }, 'detailedMagicFridgeRecipes'));
-  window.renderApp();
 }
 
 export default function FridgeIngredients() {

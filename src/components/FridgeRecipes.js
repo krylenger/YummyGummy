@@ -2,9 +2,13 @@ import styles from '../../style.css';
 import { getPreparedRecipeCardData, RecipeCard } from './RecipeCard';
 
 export default function FridgeRecipes() {
-  const { isMagicFridge, detailedMagicFridgeRecipes } = window.dataStore;
+  const { isMagicFridge, detailedMagicFridgeRecipes, errorInTheFridge } = window.dataStore;
   let content = '';
   let contentDescription = '';
+  if (errorInTheFridge) {
+    contentDescription = `<div>Please add at least one valid ingredient.</div>`;
+    return `<div>${contentDescription}</div>`;
+  }
   if (isMagicFridge) {
     contentDescription = `<h3>Here we go!</h3><p>We have tried to select the best fitting recipes based on your fridge ingredients. Some ingredients may be missing so your imagination can help you how to change them and cook the best meal ever!</p>`;
   }
