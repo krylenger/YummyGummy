@@ -10,6 +10,6 @@ export default function App() {
     ${GetMealPlanByGoal()}
     ${GetRecipeByIngredients()}
     ${SearchForRecipesByName()}
-    ${window.dataStore.isModalRecipeOpened ? RenderModalRecipe() : ``}
+    ${window.dataStore.isModalRecipeOpened ? RenderModalRecipe() : null}
   </div>`;
 }
