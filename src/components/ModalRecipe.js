@@ -1,3 +1,6 @@
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from '../framework/element';
 import styles from '../../style.css';
 import { getNutrientAmount } from '../utils';
 
@@ -23,6 +26,11 @@ export function openModalRecipe(targetId) {
   window.dataStore.modalRecipeData = modalRecipeData;
   // window.dataStore.modalRecipeId += `<button onclick="window.dataStore.isModalRecipeOpened = false; window.renderApp();">Close Modal</button>`;
   window.dataStore.isModalRecipeOpened = true;
+  window.renderApp();
+}
+
+export function closeModalRecipe() {
+  window.dataStore.isModalRecipeOpened = false;
   window.renderApp();
 }
 
@@ -62,22 +70,40 @@ export function CreateModalRecipeWindow({
   carbohydratesAmount,
   proteinAmount,
 }) {
-  return `<div class="${styles.modalRecipeContainer}">
-  <div class="${styles.modalRecipeContainerInner}">
-  <h1>${title}</h1>
-  <div class="${styles.modalRecipeContainer_image}"><img  src="${image}" alt="${title}"></div>
-  <div class="${styles.modalRecipeContainer_nutrientsContainer}">
-  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Calories:</p> <p>${caloriesAmount}</p></div>
-  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Protein:</p> <p>${proteinAmount}</p></div>
-  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Fat:</p> <p>${fatAmount}</p></div>
-  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Carbohydrates:</p> <p>${carbohydratesAmount}</p></div>
-  </div>
-  <p class="${styles.modalRecipeContainer_instructions}">${instructions}</p>
-  <p>Ready in: ${readyInMinutes} minutes.</p>
-  <button onclick="window.dataStore.isModalRecipeOpened = false; window.renderApp();">Close Modal</button></div></div>`;
+  return (
+    <div class={styles.modalRecipeContainer}>
+      <div class={styles.modalRecipeContainerInner}>
+        <h1>{title}</h1>
+        <div class={styles.modalRecipeContainer_image}>
+          <img src={image} alt={title} />
+        </div>
+        <div class={styles.modalRecipeContainer_nutrientsContainer}>
+          <div class={styles.recipeCard_nutrientInfoLine}>
+            <p>Calories:</p>
+            <p>{caloriesAmount}</p>
+          </div>
+          <div class={styles.recipeCard_nutrientInfoLine}>
+            <p>Protein:</p>
+            <p>{proteinAmount}</p>
+          </div>
+          <div class={styles.recipeCard_nutrientInfoLine}>
+            <p>Fat:</p>
+            <p>{fatAmount}</p>
+          </div>
+          <div class={styles.recipeCard_nutrientInfoLine}>
+            <p>Carbohydrates:</p>
+            <p>{carbohydratesAmount}</p>
+          </div>
+        </div>
+        <p class={styles.modalRecipeContainer_instructions}>{instructions}</p>
+        <p>Ready in: {readyInMinutes} minutes.</p>
+        <button onClick={closeModalRecipe}>Close Modal</button>
+      </div>
+    </div>
+  );
 }
 
-export function RenderModalRecipe() {
+export function ModalRecipe() {
   const preparedModalRecipeData = getPreparedModalRecipeData(window.dataStore.modalRecipeData);
   const content = CreateModalRecipeWindow(preparedModalRecipeData);
   return content;

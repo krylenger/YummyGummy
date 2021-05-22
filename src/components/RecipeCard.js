@@ -1,3 +1,6 @@
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from '../framework/element';
 import styles from '../../style.css';
 import { getNutrientAmount } from '../utils';
 
@@ -40,11 +43,32 @@ export function RecipeCard({
   carbohydratesAmount,
   proteinAmount,
 }) {
-  return `<div class="${styles.recipeCard}" id="${id}" onclick="window.openModalRecipe(this.id);"><h4>${title}</h4>
-  <image class="${styles.recipeCard_image}"src="${image}" alt="${title}"/>
-  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Calories:</p> <p>${caloriesAmount}</p></div>
-  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Protein:</p> <p>${proteinAmount}</p></div>
-  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Fat:</p> <p>${fatAmount}</p></div>
-  <div class="${styles.recipeCard_nutrientInfoLine}"><p>Carbohydrates:</p> <p>${carbohydratesAmount}</p></div>
-  </div>`;
+  return (
+    <div
+      class={styles.recipeCard}
+      id={id}
+      onclick={function () {
+        window.openModalRecipe(this.id);
+      }}
+    >
+      <h4>{title}</h4>
+      <img class={styles.recipeCard_image} src={image} alt={title} />
+      <div class={styles.recipeCard_nutrientInfoLine}>
+        <p>Calories:</p>
+        <p>{caloriesAmount}</p>
+      </div>
+      <div class={styles.recipeCard_nutrientInfoLine}>
+        <p>Protein:</p>
+        <p>{proteinAmount}</p>
+      </div>
+      <div class={styles.recipeCard_nutrientInfoLine}>
+        <p>Fat:</p>
+        <p>{fatAmount}</p>
+      </div>
+      <div class={styles.recipeCard_nutrientInfoLine}>
+        <p>Carbohydrates:</p>
+        <p>{carbohydratesAmount}</p>
+      </div>
+    </div>
+  );
 }

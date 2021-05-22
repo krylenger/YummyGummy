@@ -1,7 +1,11 @@
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement } from './element';
 let Component, Target;
 
-export default function renderApp(functionalComponent, targetElementId) {
+export default function renderApp(functionalComponent = null, targetElement = null) {
   if (functionalComponent) Component = functionalComponent;
-  if (targetElementId) Target = targetElementId;
-  document.getElementById(Target).innerHTML = Component();
+  if (targetElement) Target = targetElement;
+  Target.innerHTML = '';
+  Target.appendChild(<Component />);
 }

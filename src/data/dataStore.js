@@ -1,6 +1,6 @@
 const dataStore = {
-  currentGoal: '',
-  usersWeight: '',
+  currentGoal: 'gain',
+  usersWeight: '42',
   magicFridgeItems: [],
   searchedRecipe: '',
   recipesInCache: [],

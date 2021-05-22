@@ -19,4 +19,4 @@ if (module.hot) {
   module.hot.accept();
 }
 
-renderApp(App, 'app-root');
+renderApp(App, document.getElementById('app-root'));

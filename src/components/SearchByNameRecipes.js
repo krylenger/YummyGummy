@@ -1,3 +1,6 @@
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from '../framework/element';
 import { RecipeCard, getPreparedRecipeCardData } from './RecipeCard';
 import { isCurrentRecipeInCache } from '../utils';
 import styles from '../../style.css';
@@ -14,11 +17,11 @@ export default function SearchByNameRecipes() {
 
   //initial state
   if (searchedRecipe === '') {
-    content = 'Please enter recipe name.';
+    content = <p>Please enter recipe name.</p>;
   } else {
     //loading state
     if (isDataLoading) {
-      content = 'Loading...';
+      content = <p>Loading...</p>;
     }
     //error state
     if (error) {
@@ -30,8 +33,8 @@ export default function SearchByNameRecipes() {
         const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
         return RecipeCard(preparedRecipeCardData);
       });
-      content = recipeCards.join('');
+      content = recipeCards;
     }
   }
-  return `<div class="${styles.recipeCardsContainer}">${content}</div>`;
+  return <div class={styles.recipeCardsContainer}>{content}</div>;
 }

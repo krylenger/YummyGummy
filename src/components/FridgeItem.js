@@ -1,3 +1,6 @@
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement } from '../framework/element';
 import styles from '../../style.css';
 
 window.removeFridgeItem = removeFridgeItem;
@@ -8,8 +11,18 @@ function removeFridgeItem(id) {
 }
 
 export function FridgeItem(fridgeItemData) {
-  return `<div class="${styles.fridgeItemContainer}">
-  <button class="${styles.fridgeItemContainer_button}" id="${fridgeItemData}" onclick="window.removeFridgeItem(this.id);">x</button>
-  <label class="${styles.fridgeItemContainer_label}" for="${fridgeItemData}">${fridgeItemData}</label>
-  </div>`;
+  return (
+    <div class={styles.fridgeItemContainer}>
+      <button
+        class={styles.fridgeItemContainer_button}
+        id={fridgeItemData}
+        onClick={event => window.removeFridgeItem(event.target.id)}
+      >
+        {'x'}
+      </button>
+      <label class={styles.fridgeItemContainer_label} For={fridgeItemData}>
+        {fridgeItemData}
+      </label>
+    </div>
+  );
 }
