@@ -1,9 +1,8 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
+import renderApp from '../framework/render';
 import styles from '../../style.css';
-
-window.FillFridgeOnChangeCB = FillFridgeOnChangeCB;
 
 function FillFridgeOnChangeCB(value) {
   const { magicFridgeItems } = window.dataStore;
@@ -11,7 +10,7 @@ function FillFridgeOnChangeCB(value) {
   if (magicFridgeItems.length < 5) {
     magicFridgeItems.push(value);
     value = '';
-    window.renderApp();
+    renderApp();
   } else {
     alert('5 ingredients are maximum');
   }
@@ -28,7 +27,7 @@ export default function AddFridgeIngredients() {
       <input
         type="text"
         placeholder="what is in your fridge?"
-        onChange={e => window.FillFridgeOnChangeCB(e.target.value)}
+        onChange={e => FillFridgeOnChangeCB(e.target.value)}
       />
       <button type="submit">+add</button>
     </>

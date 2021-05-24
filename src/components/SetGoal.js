@@ -1,17 +1,19 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
+import { getDailyMealPlan } from '../data/spoonacularAPI';
+import renderApp from '../framework/render';
 import styles from '../../style.css';
 import GoalSwitch from './GoalSwitch';
 
 function setCurrentGoal(value) {
   window.dataStore.currentGoal = value;
-  window.renderApp();
+  renderApp();
 }
 
 function handleWeightChange({ target }) {
   window.dataStore.usersWeight = target.value;
-  window.renderApp();
+  renderApp();
 }
 
 export default function SetGoal() {
@@ -34,7 +36,7 @@ export default function SetGoal() {
         placeholder="your weight"
         onChange={handleWeightChange}
       />
-      <button onClick={window.getDailyMealPlan}>Submit</button>
+      <button onClick={getDailyMealPlan}>Submit</button>
     </div>
   );
 }

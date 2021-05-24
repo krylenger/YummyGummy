@@ -1,13 +1,12 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement } from '../framework/element';
+import renderApp from '../framework/render';
 import styles from '../../style.css';
-
-window.removeFridgeItem = removeFridgeItem;
 
 function removeFridgeItem(id) {
   window.dataStore.magicFridgeItems = window.dataStore.magicFridgeItems.filter(item => item !== id);
-  window.renderApp();
+  renderApp();
 }
 
 export function FridgeItem(fridgeItemData) {
@@ -16,7 +15,7 @@ export function FridgeItem(fridgeItemData) {
       <button
         class={styles.fridgeItemContainer_button}
         id={fridgeItemData}
-        onClick={event => window.removeFridgeItem(event.target.id)}
+        onClick={event => removeFridgeItem(event.target.id)}
       >
         {'x'}
       </button>

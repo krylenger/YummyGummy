@@ -1,6 +1,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
+import { performSearchRecipes } from '../data/spoonacularAPI';
 import styles from '../../style.css';
 
 export default function SearchRecipes() {

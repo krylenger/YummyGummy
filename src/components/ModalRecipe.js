@@ -1,6 +1,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
+import renderApp from '../framework/render';
 import styles from '../../style.css';
 import { getNutrientAmount } from '../utils';
 
@@ -26,12 +27,12 @@ export function openModalRecipe(targetId) {
   window.dataStore.modalRecipeData = modalRecipeData;
   // window.dataStore.modalRecipeId += `<button onclick="window.dataStore.isModalRecipeOpened = false; window.renderApp();">Close Modal</button>`;
   window.dataStore.isModalRecipeOpened = true;
-  window.renderApp();
+  renderApp();
 }
 
 export function closeModalRecipe() {
   window.dataStore.isModalRecipeOpened = false;
-  window.renderApp();
+  renderApp();
 }
 
 export function getPreparedModalRecipeData({

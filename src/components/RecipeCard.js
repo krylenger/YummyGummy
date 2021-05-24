@@ -1,6 +1,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../framework/element';
+import { openModalRecipe } from '../components/ModalRecipe';
 import styles from '../../style.css';
 import { getNutrientAmount } from '../utils';
 
@@ -48,7 +49,7 @@ export function RecipeCard({
       class={styles.recipeCard}
       id={id}
       onclick={function () {
-        window.openModalRecipe(this.id);
+        openModalRecipe(this.id);
       }}
     >
       <h4>{title}</h4>
