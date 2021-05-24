@@ -1,0 +1,20 @@
+.appContainer {
+  height: auto;
+  min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  background: yellow;
+  background-image: linear-gradient(to right, #00ccff, #00ff6e);
+}
+
+.header {
+  text-align: center;
+  width: 100%;
+  padding: 10px 0px;
+  border-bottom: 5px dotted white;
+  color: #2f3030;
+  font-size: 21px;
+  font-family: Arial, Helvetica, sans-serif;
+}

@@ -1,0 +1,21 @@
+.fridgeItemContainer {
+  padding-left: 9px;
+}
+
+.fridgeItemContainer_button {
+  border: none;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0);
+  padding: 0px 3px;
+  color: rgba(255, 0, 0, 0.9);
+}
+.fridgeItemContainer_button:hover {
+  cursor: pointer;
+}
+
+.fridgeItemContainer_label {
+  padding-left: 6px;
+}
+.fridgeItemContainer_label:hover {
+  cursor: pointer;
+}
