@@ -1,1 +1,1 @@
-export { default } from './FridgeItem';
+export { FridgeItem, removeFridgeItem } from './FridgeItem';

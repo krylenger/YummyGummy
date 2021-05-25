@@ -3,6 +3,13 @@
 import { createElement, createFragment } from '../../framework/element';
 import { mealDescription, recipeCardsContainer } from './FridgeRecipes.css';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard/RecipeCard';
+import { openModalRecipe } from '../ModalRecipe';
+
+function findElementAndOpenModal({ target }) {
+  let card = target.closest('li');
+  if (!card) return;
+  openModalRecipe(card.id);
+}
 
 export default function FridgeRecipes() {
   const { isMagicFridge, detailedMagicFridgeRecipes, errorInTheFridge } = window.dataStore;
@@ -34,7 +41,9 @@ export default function FridgeRecipes() {
   return (
     <div>
       <div class={mealDescription}>{contentDescription}</div>
-      <div class={recipeCardsContainer}>{content}</div>
+      <ul class={recipeCardsContainer} onClick={event => findElementAndOpenModal(event)}>
+        {content}
+      </ul>
     </div>
   );
 }

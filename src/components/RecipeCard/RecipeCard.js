@@ -45,13 +45,7 @@ export function RecipeCard({
   proteinAmount,
 }) {
   return (
-    <div
-      class={recipeCard}
-      id={id}
-      onclick={function () {
-        openModalRecipe(this.id);
-      }}
-    >
+    <li class={recipeCard} id={id}>
       <h4>{title}</h4>
       <img class={recipeCard_image} src={image} alt={title} />
       <div class={recipeCard_nutrientInfoLine}>
@@ -70,6 +64,6 @@ export function RecipeCard({
         <p>Carbohydrates:</p>
         <p>{carbohydratesAmount}</p>
       </div>
-    </div>
+    </li>
   );
 }

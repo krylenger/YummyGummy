@@ -3,6 +3,13 @@
 import { createElement, createFragment } from '../../framework/element';
 import { recipesContainer, mealDescription, recipeCardsContainer } from './DailyMealPlan.css';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard';
+import { openModalRecipe } from '../ModalRecipe';
+
+function clickOnRecipeContainerCB({ target }) {
+  let card = target.closest('li');
+  if (!card) return;
+  openModalRecipe(card.id);
+}
 
 export default function DailyMealPlan() {
   const { dailyMealPlan, detailedMealPlanRecipes } = window.dataStore;
@@ -39,7 +46,9 @@ export default function DailyMealPlan() {
   return (
     <div class={recipesContainer}>
       <div class={mealDescription}>{contentDescription}</div>
-      <div class={recipeCardsContainer}>{content}</div>
+      <ul class={recipeCardsContainer} onClick={event => clickOnRecipeContainerCB(event)}>
+        {content}
+      </ul>
     </div>
   );
 }

@@ -8,8 +8,17 @@ import {
 } from './FridgeIngredients.css';
 import { FridgeItem } from '../FridgeItem/FridgeItem';
 import { loadMagicFridgeRecipes, loadDetailedRecipesInfo } from '../../data/spoonacularAPI';
+import renderApp from '../../framework/render';
 
-function magicButtonCB() {
+function removeFridgeItem({ target }) {
+  const item = target.closest('li');
+  const id = item.id;
+  if (!item) return;
+  window.dataStore.magicFridgeItems = window.dataStore.magicFridgeItems.filter(item => item !== id);
+  renderApp();
+}
+
+function magicButton() {
   let promise = loadMagicFridgeRecipes();
   promise.then(data => loadDetailedRecipesInfo({ results: data }, 'detailedMagicFridgeRecipes'));
 }
@@ -19,13 +28,15 @@ export default function FridgeIngredients() {
   let confirmButton = null;
   if (window.dataStore.magicFridgeItems.length > 0) {
     confirmButton = (
-      <button class={fridgeIngredientsListContainer_magicButton} onClick={magicButtonCB}>
+      <button class={fridgeIngredientsListContainer_magicButton} onClick={magicButton}>
         Magic
       </button>
     );
   }
   content = (
-    <>{window.dataStore.magicFridgeItems.map(fridgeItemData => FridgeItem(fridgeItemData))}</>
+    <ul onClick={event => removeFridgeItem(event)}>
+      {window.dataStore.magicFridgeItems.map(fridgeItemData => FridgeItem(fridgeItemData))}
+    </ul>
   );
   return (
     <div class={fridgeIngredientsListContainer}>

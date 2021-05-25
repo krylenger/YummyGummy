@@ -2,8 +2,15 @@
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../../framework/element';
 import { RecipeCard, getPreparedRecipeCardData } from '../RecipeCard';
+import { openModalRecipe } from '../ModalRecipe';
 import { isCurrentRecipeInCache } from '../../utils';
 import { recipeCardsContainer } from './SearchByNameRecipes.css';
+
+function clickOnRecipeContainerCB({ target }) {
+  let card = target.closest('li');
+  if (!card) return;
+  openModalRecipe(card.id);
+}
 
 export default function SearchByNameRecipes() {
   const {
@@ -36,5 +43,9 @@ export default function SearchByNameRecipes() {
       content = recipeCards;
     }
   }
-  return <div class={recipeCardsContainer}>{content}</div>;
+  return (
+    <ul class={recipeCardsContainer} onClick={event => clickOnRecipeContainerCB(event)}>
+      {content}
+    </ul>
+  );
 }
