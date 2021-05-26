@@ -62,9 +62,7 @@ export default function GetMealPlanByGoal() {
       }
     }
   }, [isSubmitClicked, currentGoal, usersWeight]);
-  console.log('>>><<<');
   console.log(detailedMealPlanRecipes, dailyMealPlan);
-  console.log('>>><<<');
   return (
     <div class={getMealPlanByGoal}>
       <SetGoal
