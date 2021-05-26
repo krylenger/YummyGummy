@@ -1,16 +1,15 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
-import renderApp from '../../framework/render';
+import { createElement, createFragment } from '../../framework';
+import { render } from '../../framework';
 import styles from './AddFridgeIngredients.css';
 
 function FillFridgeOnChangeCB(value) {
   const { magicFridgeItems } = window.dataStore;
-
   if (magicFridgeItems.length < 5) {
     magicFridgeItems.push(value);
     value = '';
-    renderApp();
+    render();
   } else {
     alert('5 ingredients are maximum');
   }

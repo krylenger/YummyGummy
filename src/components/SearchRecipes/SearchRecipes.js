@@ -4,8 +4,8 @@ import { createElement, createFragment } from '../../framework/element';
 import { performSearchRecipes } from '../../data/spoonacularAPI';
 import { searchForRecipeByNameContainer_header } from './SearchRecipes.css';
 
-export default function SearchRecipes() {
-  const { searchedRecipe } = window.dataStore;
+export default function SearchRecipes({ searchedRecipe, setSearchedRecipe }) {
+  // const { searchedRecipe } = window.dataStore;
   return (
     <div class={searchForRecipeByNameContainer_header}>
       <h2>Search by recipe name</h2>
@@ -13,7 +13,7 @@ export default function SearchRecipes() {
         type="text"
         value={searchedRecipe}
         placeholder="enter recipe (ex: rice)"
-        onchange={event => performSearchRecipes(event.target.value)}
+        onchange={event => setSearchedRecipe(event.target.value)}
       />
     </div>
   );

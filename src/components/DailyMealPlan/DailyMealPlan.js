@@ -5,14 +5,14 @@ import { recipesContainer, mealDescription, recipeCardsContainer } from './Daily
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard';
 import { openModalRecipe } from '../ModalRecipe';
 
-function clickOnRecipeContainerCB({ target }) {
+function findTargetCardAndOpenModal({ target }) {
   let card = target.closest('li');
   if (!card) return;
   openModalRecipe(card.id);
 }
 
-export default function DailyMealPlan() {
-  const { dailyMealPlan, detailedMealPlanRecipes } = window.dataStore;
+export default function DailyMealPlan({ dailyMealPlan, detailedMealPlanRecipes }) {
+  // const { dailyMealPlan, detailedMealPlanRecipes } = window.dataStore;
   let content = null;
   let contentDescription = null;
   if (dailyMealPlan) {
@@ -36,7 +36,7 @@ export default function DailyMealPlan() {
   }
 
   if (detailedMealPlanRecipes.length) {
-    const recipeCards = window.dataStore.detailedMealPlanRecipes.map(detailedRecipeCardData => {
+    const recipeCards = detailedMealPlanRecipes.map(detailedRecipeCardData => {
       const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
       return RecipeCard(preparedRecipeCardData);
     });
@@ -46,7 +46,7 @@ export default function DailyMealPlan() {
   return (
     <div class={recipesContainer}>
       <div class={mealDescription}>{contentDescription}</div>
-      <ul class={recipeCardsContainer} onClick={event => clickOnRecipeContainerCB(event)}>
+      <ul class={recipeCardsContainer} onClick={event => findTargetCardAndOpenModal(event)}>
         {content}
       </ul>
     </div>

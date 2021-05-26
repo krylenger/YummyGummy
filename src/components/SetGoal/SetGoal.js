@@ -9,6 +9,7 @@ import {
   getMealPlanByGoalHeader_p,
 } from './SetGoal.css';
 import GoalSwitch from '../GoalSwitch';
+import { useEffect } from '../../framework';
 
 function setCurrentGoal(value) {
   window.dataStore.currentGoal = value;
@@ -20,8 +21,13 @@ function handleWeightChange({ target }) {
   renderApp();
 }
 
-export default function SetGoal() {
-  const { currentGoal, usersWeight } = window.dataStore;
+export default function SetGoal({
+  currentGoal,
+  setCurrentGoal,
+  usersWeight,
+  setUsersWeight,
+  setIsSubmitClicked,
+}) {
   return (
     <div class={getMealPlanByGoalHeader}>
       <h2 class={getMealPlanByGoalHeader_h2}>Do you want to lose or to gain weight?</h2>
@@ -38,9 +44,9 @@ export default function SetGoal() {
         type="number"
         value={usersWeight}
         placeholder="your weight"
-        onChange={handleWeightChange}
+        onChange={e => setUsersWeight(e.target.value)}
       />
-      <button onClick={getDailyMealPlan}>Submit</button>
+      <button onClick={() => setIsSubmitClicked(true)}>Submit</button>
     </div>
   );
 }

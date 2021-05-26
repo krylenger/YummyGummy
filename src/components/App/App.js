@@ -1,6 +1,6 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement } from '../../framework/element';
+import { createElement } from '../../framework';
 import GetMealPlanByGoal from '../GetMealPlanByGoal';
 import GetRecipeByIngredients from '../GetRecipeByIngredients';
 import SearchForRecipesByName from '../SearchForRecipesByName';
