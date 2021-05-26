@@ -22,7 +22,6 @@ export default function GetMealPlanByGoal() {
       });
 
       function loadDailyMealPlan() {
-        // const { currentGoal, usersWeight } = window.dataStore;
         const maxCalories = calculateMaxCalories(currentGoal, usersWeight);
         return fetch(
           `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate?timeFrame=day&targetCalories=${maxCalories}`,
@@ -39,7 +38,7 @@ export default function GetMealPlanByGoal() {
           .catch(err => {
             setError(err);
           })
-          .finally(() => console.log('setIsLoading(false)'));
+          .finally(() => console.log('loadedShortRecipes'));
       }
       function loadDetailedRecipesInfo({ results }) {
         const urlsOfDetailedRecipes = results.map(result => getUrlOfDetailedRecipe(result.id));
@@ -58,7 +57,7 @@ export default function GetMealPlanByGoal() {
           .catch(error => {
             setError('Error inside loadDetailedRecipesInfo');
           })
-          .finally(() => console.log('detailedRecipeInfoLoaded'));
+          .finally(() => console.log('loadedDetailedRecipes'));
       }
     }
   }, [isSubmitClicked, currentGoal, usersWeight]);
