@@ -1,7 +1,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, useState, useEffect } from '../../framework';
-import { getMealPlanByGoal } from './getMealPlanByGoal.css';
+import { getMealPlanByGoal } from './GetMealPlanByGoal.css';
 import SetGoal from '../SetGoal';
 import DailyMealPlan from '../DailyMealPlan/DailyMealPlan';
 import { calculateMaxCalories } from '../../utils';
