@@ -1,18 +1,28 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
+import { createElement, createFragment, useState } from '../../framework';
 import { mealDescription, recipeCardsContainer } from './FridgeRecipes.css';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard/RecipeCard';
-import { openModalRecipe } from '../ModalRecipe';
+import { openModalRecipe, ModalRecipe } from '../ModalRecipe';
 
-function findElementAndOpenModal({ target }) {
+function findElementAndOpenModal(
+  target,
+  setIsModalRecipeOpened,
+  setModalRecipeData,
+  detailedRecipes,
+) {
   let card = target.closest('li');
   if (!card) return;
-  openModalRecipe(card.id);
+  console.log('----');
+  console.log(detailedRecipes);
+  console.log('----');
+  openModalRecipe(card.id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes);
 }
 
-export default function FridgeRecipes() {
-  const { isMagicFridge, detailedMagicFridgeRecipes, errorInTheFridge } = window.dataStore;
+export default function FridgeRecipes({ detailedRecipes, isMagicFridge, errorInTheFridge }) {
+  // const { isMagicFridge, detailedRecipes, errorInTheFridge } = window.dataStore;
+  const [isModalRecipeOpened, setIsModalRecipeOpened] = useState(false);
+  const [modalRecipeData, setModalRecipeData] = useState([]);
   let content = '';
   let contentDescription = '';
   if (errorInTheFridge) {
@@ -31,8 +41,8 @@ export default function FridgeRecipes() {
       </>
     );
   }
-  if (detailedMagicFridgeRecipes.length) {
-    const recipeCards = window.dataStore.detailedMagicFridgeRecipes.map(detailedRecipeCardData => {
+  if (detailedRecipes.length) {
+    const recipeCards = detailedRecipes.map(detailedRecipeCardData => {
       const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
       return RecipeCard(preparedRecipeCardData);
     });
@@ -41,9 +51,25 @@ export default function FridgeRecipes() {
   return (
     <div>
       <div class={mealDescription}>{contentDescription}</div>
-      <ul class={recipeCardsContainer} onClick={event => findElementAndOpenModal(event)}>
+      <ul
+        class={recipeCardsContainer}
+        onClick={event =>
+          findElementAndOpenModal(
+            event.target,
+            setIsModalRecipeOpened,
+            setModalRecipeData,
+            detailedRecipes,
+          )
+        }
+      >
         {content}
       </ul>
+      {isModalRecipeOpened ? (
+        <ModalRecipe
+          modalRecipeData={modalRecipeData}
+          setIsModalRecipeOpened={setIsModalRecipeOpened}
+        />
+      ) : null}
     </div>
   );
 }

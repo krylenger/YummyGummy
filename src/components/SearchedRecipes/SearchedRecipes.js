@@ -4,7 +4,7 @@ import { createElement, createFragment } from '../../framework/element';
 import { RecipeCard, getPreparedRecipeCardData } from '../RecipeCard';
 import { openModalRecipe } from '../ModalRecipe';
 import { isCurrentRecipeInCache } from '../../utils';
-import { recipeCardsContainer } from './SearchByNameRecipes.css';
+import { recipeCardsContainer } from './SearchedRecipes.css';
 
 function clickOnRecipeContainerCB({ target }) {
   let card = target.closest('li');
@@ -12,7 +12,7 @@ function clickOnRecipeContainerCB({ target }) {
   openModalRecipe(card.id);
 }
 
-export default function SearchByNameRecipes() {
+export default function SearchedRecipes() {
   const {
     searchedRecipe,
     isDataLoading,

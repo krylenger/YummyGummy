@@ -5,14 +5,23 @@ import { recipesContainer, mealDescription, recipeCardsContainer } from './Daily
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard';
 import { openModalRecipe } from '../ModalRecipe';
 
-function findTargetCardAndOpenModal({ target }) {
+function findTargetCardAndOpenModal(
+  { target },
+  setIsModalRecipeOpened,
+  setModalRecipeData,
+  detailedRecipes,
+) {
   let card = target.closest('li');
   if (!card) return;
-  openModalRecipe(card.id);
+  openModalRecipe(card.id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes);
 }
 
-export default function DailyMealPlan({ dailyMealPlan, detailedMealPlanRecipes }) {
-  // const { dailyMealPlan, detailedMealPlanRecipes } = window.dataStore;
+export default function DailyMealPlan({
+  dailyMealPlan,
+  detailedRecipes,
+  setIsModalRecipeOpened,
+  setModalRecipeData,
+}) {
   let content = null;
   let contentDescription = null;
   if (dailyMealPlan) {
@@ -35,8 +44,8 @@ export default function DailyMealPlan({ dailyMealPlan, detailedMealPlanRecipes }
     );
   }
 
-  if (detailedMealPlanRecipes.length) {
-    const recipeCards = detailedMealPlanRecipes.map(detailedRecipeCardData => {
+  if (detailedRecipes.length) {
+    const recipeCards = detailedRecipes.map(detailedRecipeCardData => {
       const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
       return RecipeCard(preparedRecipeCardData);
     });
@@ -46,7 +55,17 @@ export default function DailyMealPlan({ dailyMealPlan, detailedMealPlanRecipes }
   return (
     <div class={recipesContainer}>
       <div class={mealDescription}>{contentDescription}</div>
-      <ul class={recipeCardsContainer} onClick={event => findTargetCardAndOpenModal(event)}>
+      <ul
+        class={recipeCardsContainer}
+        onClick={event => {
+          findTargetCardAndOpenModal(
+            event,
+            setIsModalRecipeOpened,
+            setModalRecipeData,
+            detailedRecipes,
+          );
+        }}
+      >
         {content}
       </ul>
     </div>

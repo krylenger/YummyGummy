@@ -117,7 +117,6 @@ export function performSearchRecipes(recipeName) {
   renderApp();
   validateAndLoadData()
     .then(({ error, data }) => {
-      // console.log('works');
       window.dataStore.isDataLoading = false;
       if (error) {
         window.dataStore.error = error;

@@ -10,38 +10,40 @@ import { FridgeItem } from '../FridgeItem/FridgeItem';
 import { loadMagicFridgeRecipes, loadDetailedRecipesInfo } from '../../data/spoonacularAPI';
 import renderApp from '../../framework/render';
 
-function removeFridgeItem({ target }) {
+function removeFridgeItem(target, magicFridgeItems, setMagicFridgeItems) {
   const item = target.closest('li');
   const id = item.id;
   if (!item) return;
-  window.dataStore.magicFridgeItems = window.dataStore.magicFridgeItems.filter(item => item !== id);
+  setMagicFridgeItems(magicFridgeItems.filter(item => item !== id));
   renderApp();
 }
 
-function magicButton() {
-  let promise = loadMagicFridgeRecipes();
-  promise.then(data => loadDetailedRecipesInfo({ results: data }, 'detailedMagicFridgeRecipes'));
-}
-
-export default function FridgeIngredients() {
+export default function FridgeIngredients({
+  magicFridgeItems,
+  setMagicFridgeItems,
+  setIsMagicButtonClicked,
+}) {
   let content = null;
-  let confirmButton = null;
-  if (window.dataStore.magicFridgeItems.length > 0) {
-    confirmButton = (
-      <button class={fridgeIngredientsListContainer_magicButton} onClick={magicButton}>
+  let magicButton = null;
+  if (magicFridgeItems.length > 0) {
+    magicButton = (
+      <button
+        class={fridgeIngredientsListContainer_magicButton}
+        onClick={() => setIsMagicButtonClicked(true)}
+      >
         Magic
       </button>
     );
   }
   content = (
-    <ul onClick={event => removeFridgeItem(event)}>
-      {window.dataStore.magicFridgeItems.map(fridgeItemData => FridgeItem(fridgeItemData))}
+    <ul onClick={event => removeFridgeItem(event.target, magicFridgeItems, setMagicFridgeItems)}>
+      {magicFridgeItems.map(fridgeItemData => FridgeItem(fridgeItemData))}
     </ul>
   );
   return (
     <div class={fridgeIngredientsListContainer}>
       <div class={fridgeIngredientsListContainer_inner}>{content}</div>
-      {confirmButton}
+      {magicButton}
     </div>
   );
 }

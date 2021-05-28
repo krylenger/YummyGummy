@@ -1,6 +1,6 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
-import { createElement } from '../../framework';
+import { createElement, useState } from '../../framework';
 import GetMealPlanByGoal from '../GetMealPlanByGoal';
 import GetRecipeByIngredients from '../GetRecipeByIngredients';
 import SearchForRecipesByName from '../SearchForRecipesByName';
@@ -16,7 +16,8 @@ export default function App() {
       <GetMealPlanByGoal />
       <GetRecipeByIngredients />
       <SearchForRecipesByName />
-      {window.dataStore.isModalRecipeOpened ? <ModalRecipe /> : null}
     </div>
   );
 }
+
+// {isModalRecipeOpened ? <ModalRecipe /> : null}

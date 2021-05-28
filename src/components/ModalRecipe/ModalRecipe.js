@@ -12,29 +12,23 @@ import {
 } from './ModalRecipe.css';
 import { getNutrientAmount } from '../../utils';
 
-export function getModalRecipeData(targetId) {
-  const {
-    detailedMealPlanRecipes,
-    detailedSearchedRecipes,
-    detailedMagicFridgeRecipes,
-  } = window.dataStore;
-  let modalRecipeData = '';
-  if (detailedMealPlanRecipes.find(({ id }) => id == targetId)) {
-    return detailedMealPlanRecipes.find(({ id }) => id == targetId);
-  } else if (detailedSearchedRecipes.find(({ id }) => id == targetId)) {
-    return detailedSearchedRecipes.find(({ id }) => id == targetId);
-  } else if (detailedMagicFridgeRecipes.find(({ id }) => id == targetId)) {
-    return detailedMagicFridgeRecipes.find(({ id }) => id == targetId);
-  }
-  return modalRecipeData;
+export function getModalRecipeData(targetId, detailedRecipes) {
+  console.log('***');
+  console.log(targetId, detailedRecipes);
+  console.log('***');
+
+  return detailedRecipes.find(({ id }) => id == targetId);
 }
 
-export function openModalRecipe(targetId) {
-  const modalRecipeData = getModalRecipeData(targetId);
-  window.dataStore.modalRecipeData = modalRecipeData;
-  // window.dataStore.modalRecipeId += `<button onclick="window.dataStore.isModalRecipeOpened = false; window.renderApp();">Close Modal</button>`;
-  window.dataStore.isModalRecipeOpened = true;
-  renderApp();
+export function openModalRecipe(
+  targetId,
+  setIsModalRecipeOpened,
+  setModalRecipeData,
+  detailedRecipes,
+) {
+  const modalRecipeData = getModalRecipeData(targetId, detailedRecipes);
+  setModalRecipeData(modalRecipeData);
+  setIsModalRecipeOpened(true);
 }
 
 export function closeModalRecipe() {
@@ -67,17 +61,20 @@ export function getPreparedModalRecipeData({
   };
 }
 
-export function CreateModalRecipeWindow({
-  id,
-  image,
-  instructions,
-  readyInMinutes,
-  title,
-  caloriesAmount,
-  fatAmount,
-  carbohydratesAmount,
-  proteinAmount,
-}) {
+export function CreateModalRecipeWindow(
+  {
+    id,
+    image,
+    instructions,
+    readyInMinutes,
+    title,
+    caloriesAmount,
+    fatAmount,
+    carbohydratesAmount,
+    proteinAmount,
+  },
+  setIsModalRecipeOpened,
+) {
   return (
     <div class={modalRecipeContainer}>
       <div class={modalRecipeContainerInner}>
@@ -105,14 +102,20 @@ export function CreateModalRecipeWindow({
         </div>
         <p class={modalRecipeContainer_instructions}>{instructions}</p>
         <p>Ready in: {readyInMinutes} minutes.</p>
-        <button onClick={closeModalRecipe}>Close Modal</button>
+        <button
+          onClick={() => {
+            setIsModalRecipeOpened(false);
+          }}
+        >
+          Close Modal
+        </button>
       </div>
     </div>
   );
 }
 
-export function ModalRecipe() {
-  const preparedModalRecipeData = getPreparedModalRecipeData(window.dataStore.modalRecipeData);
-  const content = CreateModalRecipeWindow(preparedModalRecipeData);
+export function ModalRecipe({ modalRecipeData, setIsModalRecipeOpened }) {
+  const preparedModalRecipeData = getPreparedModalRecipeData(modalRecipeData);
+  const content = CreateModalRecipeWindow(preparedModalRecipeData, setIsModalRecipeOpened);
   return content;
 }

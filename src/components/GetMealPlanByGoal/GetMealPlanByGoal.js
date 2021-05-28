@@ -4,64 +4,33 @@ import { createElement, useState, useEffect } from '../../framework';
 import { getMealPlanByGoal } from './GetMealPlanByGoal.css';
 import SetGoal from '../SetGoal';
 import DailyMealPlan from '../DailyMealPlan/DailyMealPlan';
-import { calculateMaxCalories } from '../../utils';
+import { getShortRecipesData, getDetailedRecipesData } from '../../framework/customHooks';
+
 import { getRapidAPIFetchOptionsData, getUrlOfDetailedRecipe } from '../../data/spoonacularAPI';
+import { ModalRecipe } from '../ModalRecipe';
 
 export default function GetMealPlanByGoal() {
-  const [currentGoal, setCurrentGoal] = useState('gain');
-  const [usersWeight, setUsersWeight] = useState('22');
-  const [isSubmitClicked, setIsSubmitClicked] = useState(false);
-  const [dailyMealPlan, setDailyMealPlan] = useState('');
-  const [error, setError] = useState('');
-  const [detailedMealPlanRecipes, setDetailedMealPlanRecipes] = useState([]);
-  useEffect(() => {
-    if (isSubmitClicked) {
-      let promise = loadDailyMealPlan();
-      promise.then(({ meals, nutrients }) => {
-        loadDetailedRecipesInfo({ results: meals });
-      });
+  const {
+    currentGoal,
+    usersWeight,
+    isSubmitClicked,
+    isShortRecipesInfoLoaded,
+    shortRecipesData,
+    dailyMealPlan,
+    error,
+    setCurrentGoal,
+    setUsersWeight,
+    setIsSubmitClicked,
+    setError,
+  } = getShortRecipesData();
+  const { detailedRecipes } = getDetailedRecipesData({
+    isShortRecipesInfoLoaded,
+    shortRecipesData,
+    setError,
+  });
+  const [isModalRecipeOpened, setIsModalRecipeOpened] = useState(false);
+  const [modalRecipeData, setModalRecipeData] = useState([]);
 
-      function loadDailyMealPlan() {
-        const maxCalories = calculateMaxCalories(currentGoal, usersWeight);
-        return fetch(
-          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate?timeFrame=day&targetCalories=${maxCalories}`,
-          getRapidAPIFetchOptionsData(),
-        )
-          .then(response => {
-            if (response.ok) return response.json();
-            throw new Error(`Error` + response.status + response.json);
-          })
-          .then(data => {
-            setDailyMealPlan(data);
-            return data;
-          })
-          .catch(err => {
-            setError(err);
-          })
-          .finally(() => console.log('loadedShortRecipes'));
-      }
-      function loadDetailedRecipesInfo({ results }) {
-        const urlsOfDetailedRecipes = results.map(result => getUrlOfDetailedRecipe(result.id));
-        let requests = urlsOfDetailedRecipes.map(url => fetch(url, getRapidAPIFetchOptionsData()));
-        return Promise.all(requests)
-          .then(responses => Promise.all(responses.map(r => r.json())))
-          .then(data => {
-            if (!data.length) {
-              throw new Error('Please enter valid ingredient.');
-            }
-            console.log('******');
-            console.log(data);
-            console.log('******');
-            setDetailedMealPlanRecipes(data);
-          })
-          .catch(error => {
-            setError('Error inside loadDetailedRecipesInfo');
-          })
-          .finally(() => console.log('loadedDetailedRecipes'));
-      }
-    }
-  }, [isSubmitClicked, currentGoal, usersWeight]);
-  console.log(detailedMealPlanRecipes, dailyMealPlan);
   return (
     <div class={getMealPlanByGoal}>
       <SetGoal
@@ -73,8 +42,16 @@ export default function GetMealPlanByGoal() {
       />
       <DailyMealPlan
         dailyMealPlan={dailyMealPlan}
-        detailedMealPlanRecipes={detailedMealPlanRecipes}
+        detailedRecipes={detailedRecipes}
+        setIsModalRecipeOpened={setIsModalRecipeOpened}
+        setModalRecipeData={setModalRecipeData}
       />
+      {isModalRecipeOpened ? (
+        <ModalRecipe
+          modalRecipeData={modalRecipeData}
+          setIsModalRecipeOpened={setIsModalRecipeOpened}
+        />
+      ) : null}
     </div>
   );
 }
