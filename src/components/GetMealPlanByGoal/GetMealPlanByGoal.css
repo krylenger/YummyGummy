@@ -1,0 +1,6 @@
+.getMealPlanByGoal {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  border-right: 5px dotted white;
+}

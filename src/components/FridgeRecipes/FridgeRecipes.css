@@ -1,0 +1,10 @@
+.mealDescription {
+  min-height: 100px;
+  padding: 10px;
+}
+
+.recipeCardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

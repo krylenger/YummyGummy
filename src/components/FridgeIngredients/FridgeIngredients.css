@@ -1,0 +1,29 @@
+.fridgeIngredientsListContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 130px;
+  background-image: url('./assets/fridge.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 7px 0px 0px 10px;
+  font-weight: 900;
+}
+
+.fridgeIngredientsListContainer_inner {
+  height: 95px;
+}
+
+.fridgeIngredientsListContainer_magicButton {
+  position: relative;
+  top: 1px;
+  left: 28px;
+  width: 49px;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  background: white;
+}
+.fridgeIngredientsListContainer_magicButton:hover {
+  background: #00d9ff;
+}

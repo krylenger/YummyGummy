@@ -35,3 +35,5 @@ export function isCurrentRecipeInCache() {
   const { recipesInCache, searchedRecipe } = window.dataStore;
   return Boolean(recipesInCache[searchedRecipe]);
 }
+
+export const isFunction = func => typeof func === 'function';

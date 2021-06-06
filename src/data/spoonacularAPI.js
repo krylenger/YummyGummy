@@ -1,4 +1,5 @@
 import { calculateMaxCalories, isCurrentRecipeInCache } from '../utils';
+import renderApp from '../framework/render';
 
 export function getSearchRecipeUrl(searchedWord) {
   return `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchedWord}&number=5`;
@@ -44,7 +45,7 @@ export function loadDailyMealPlan() {
     .catch(err => {
       window.dataStore.err = err;
     })
-    .finally(window.renderApp);
+    .finally(renderApp);
 }
 
 export function loadMagicFridgeRecipes() {
@@ -74,7 +75,7 @@ export function loadMagicFridgeRecipes() {
     .catch(err => {
       window.dataStore.err = err;
     })
-    .finally(window.renderApp);
+    .finally(renderApp);
 }
 
 export function loadDetailedRecipesInfo({ results }, whereToLoad) {
@@ -91,7 +92,7 @@ export function loadDetailedRecipesInfo({ results }, whereToLoad) {
     .catch(error => {
       window.dataStore.error = 'Error inside loadDetailedRecipesInfo';
     })
-    .finally(window.renderApp);
+    .finally(renderApp);
 }
 
 export function validateAndLoadData() {
@@ -113,10 +114,8 @@ export function performSearchRecipes(recipeName) {
   window.dataStore.searchedRecipe = recipeName;
   window.dataStore.error = null;
   window.dataStore.isDataLoading = true;
-  window.renderApp();
-
-  window
-    .validateAndLoadData()
+  renderApp();
+  validateAndLoadData()
     .then(({ error, data }) => {
       window.dataStore.isDataLoading = false;
       if (error) {
@@ -127,10 +126,15 @@ export function performSearchRecipes(recipeName) {
         }
         window.dataStore.recipesInCache[recipeName] = data;
         loadDetailedRecipesInfo(data, 'detailedSearchedRecipes');
+      } else {
+        loadDetailedRecipesInfo(
+          window.dataStore.recipesInCache[recipeName],
+          'detailedSearchedRecipes',
+        );
       }
     })
     .catch(err => {
       window.dataStore.error = `Ooops.. ${err}`;
     })
-    .finally(window.renderApp);
+    .finally(renderApp);
 }
