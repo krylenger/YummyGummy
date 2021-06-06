@@ -13,9 +13,9 @@ function findElementAndOpenModal(
 ) {
   let card = target.closest('li');
   if (!card) return;
-  console.log('----');
-  console.log(detailedRecipes);
-  console.log('----');
+  // console.log('----');
+  // console.log(detailedRecipes);
+  // console.log('----');
   openModalRecipe(card.id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes);
 }
 

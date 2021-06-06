@@ -13,9 +13,9 @@ import {
 import { getNutrientAmount } from '../../utils';
 
 export function getModalRecipeData(targetId, detailedRecipes) {
-  console.log('***');
-  console.log(targetId, detailedRecipes);
-  console.log('***');
+  // console.log('***');
+  // console.log(targetId, detailedRecipes);
+  // console.log('***');
 
   return detailedRecipes.find(({ id }) => id == targetId);
 }
@@ -26,6 +26,7 @@ export function openModalRecipe(
   setModalRecipeData,
   detailedRecipes,
 ) {
+  console.log(targetId, detailedRecipes);
   const modalRecipeData = getModalRecipeData(targetId, detailedRecipes);
   setModalRecipeData(modalRecipeData);
   setIsModalRecipeOpened(true);
