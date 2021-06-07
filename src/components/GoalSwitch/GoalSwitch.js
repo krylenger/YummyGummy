@@ -1,7 +1,9 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from '../../framework/element';
-export default function GoalSwitch({ currentGoal, setCurrentGoal }) {
+import { useAppContext } from '../../context';
+export default function GoalSwitch({ setCurrentGoal }) {
+  const currentGoal = useAppContext();
   return (
     <>
       {[
