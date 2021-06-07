@@ -5,7 +5,7 @@ import { getMealPlanByGoal } from './GetMealPlanByGoal.css';
 import SetGoal from '../SetGoal';
 import DailyMealPlan from '../DailyMealPlan/DailyMealPlan';
 import { getShortRecipesData, getDetailedRecipesData } from '../../framework/customHooks';
-
+import { AppContext } from '../../context';
 import { getRapidAPIFetchOptionsData, getUrlOfDetailedRecipe } from '../../data/spoonacularAPI';
 import { ModalRecipe } from '../ModalRecipe';
 
@@ -33,13 +33,15 @@ export default function GetMealPlanByGoal() {
 
   return (
     <div class={getMealPlanByGoal}>
-      <SetGoal
-        currentGoal={currentGoal}
-        setCurrentGoal={setCurrentGoal}
-        usersWeight={usersWeight}
-        setUsersWeight={setUsersWeight}
-        setIsSubmitClicked={setIsSubmitClicked}
-      />
+      <AppContext.Provider value={currentGoal}>
+        <SetGoal
+          // currentGoal={currentGoal}
+          setCurrentGoal={setCurrentGoal}
+          usersWeight={usersWeight}
+          setUsersWeight={setUsersWeight}
+          setIsSubmitClicked={setIsSubmitClicked}
+        />
+      </AppContext.Provider>
       <DailyMealPlan
         dailyMealPlan={dailyMealPlan}
         detailedRecipes={detailedRecipes}

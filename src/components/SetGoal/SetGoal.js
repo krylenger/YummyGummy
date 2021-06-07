@@ -11,18 +11,13 @@ import {
 import GoalSwitch from '../GoalSwitch';
 import { useEffect } from '../../framework';
 
-function setCurrentGoal(value) {
-  window.dataStore.currentGoal = value;
-  renderApp();
-}
-
-function handleWeightChange({ target }) {
-  window.dataStore.usersWeight = target.value;
-  renderApp();
-}
+// function handleWeightChange({ target }) {
+//   window.dataStore.usersWeight = target.value;
+//   renderApp();
+// }
 
 export default function SetGoal({
-  currentGoal,
+  // currentGoal,
   setCurrentGoal,
   usersWeight,
   setUsersWeight,
@@ -31,7 +26,7 @@ export default function SetGoal({
   return (
     <div class={getMealPlanByGoalHeader}>
       <h2 class={getMealPlanByGoalHeader_h2}>Do you want to lose or to gain weight?</h2>
-      <GoalSwitch currentGoal={currentGoal} setCurrentGoal={setCurrentGoal} />
+      <GoalSwitch setCurrentGoal={setCurrentGoal} />
       <p class={getMealPlanByGoalHeader_p}>
         In case you want to lose weight, we're going to create a meal plan with a decreased amount
         of carbs.
