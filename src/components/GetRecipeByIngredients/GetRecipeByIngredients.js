@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement } from '../../framework/element';
+import React from 'react';
 import { getRecipeByIngredientsContainer } from './GetRecipeByIngredients.css';
 import FillFridge from '../FillFridge';
 import FridgeRecipes from '../FridgeRecipes';
@@ -12,19 +10,22 @@ export default function GetRecipeByIngredients() {
     magicFridgeItems,
     isMagicFridge,
     errorInTheFridge,
-    err,
     shortRecipesData,
     isShortRecipesInfoLoaded,
     setMagicFridgeItems,
     setIsMagicButtonClicked,
+    setError,
+    setIsDataLoading,
   } = getShortRecipesFridgeData();
 
   const { detailedRecipes } = getDetailedRecipesData({
     isShortRecipesInfoLoaded,
     shortRecipesData,
+    setError,
+    setIsDataLoading,
   });
   return (
-    <div class={getRecipeByIngredientsContainer}>
+    <div className={getRecipeByIngredientsContainer}>
       <FillFridge
         magicFridgeItems={magicFridgeItems}
         setMagicFridgeItems={setMagicFridgeItems}

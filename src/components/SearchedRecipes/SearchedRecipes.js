@@ -1,9 +1,6 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
+import React from 'react';
 import { RecipeCard, getPreparedRecipeCardData } from '../RecipeCard';
 import { openModalRecipe } from '../ModalRecipe';
-import { isCurrentRecipeInCache } from '../../utils';
 import { recipeCardsContainer } from './SearchedRecipes.css';
 
 function findTargetCardAndOpenModal(
@@ -21,40 +18,28 @@ export default function SearchedRecipes({
   detailedRecipes,
   setIsModalRecipeOpened,
   setModalRecipeData,
+  isDataLoading,
+  error,
 }) {
-  // const {
-  //   searchedRecipe,
-  //   isDataLoading,
-  //   error,
-  //   detailedSearchedRecipes,
-  //   recipesInCache,
-  // } = window.dataStore;
-  let content = '';
+  let content = 'Please input your recipe';
 
-  //initial state
-  // if (searchedRecipe === '') {
-  //   content = <p>Please enter recipe name.</p>;
-  // } else {
-  //   //loading state
-  //   if (isDataLoading) {
-  //     content = <p>Loading...</p>;
-  //   }
-  //   //error state
-  //   if (error) {
-  //     content = error;
-  //   }
-  //results state
-  // if (isCurrentRecipeInCache()) {
-  const recipeCards = detailedRecipes.map(detailedRecipeCardData => {
-    const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
-    return RecipeCard(preparedRecipeCardData);
-  });
-  content = recipeCards;
-  // }
-  // }
+  if (error) {
+    content = 'Please enter a valid recipe name.';
+  } else if (isDataLoading) {
+    content = `Data is loading...`;
+  } else if (!detailedRecipes.length) {
+    content = 'Please input recipe name.';
+  } else {
+    const recipeCards = detailedRecipes.map(detailedRecipeCardData => {
+      const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
+      return RecipeCard(preparedRecipeCardData);
+    });
+    content = recipeCards;
+  }
+
   return (
     <ul
-      class={recipeCardsContainer}
+      className={recipeCardsContainer}
       onClick={event =>
         findTargetCardAndOpenModal(
           event,

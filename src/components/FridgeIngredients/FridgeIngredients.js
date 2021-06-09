@@ -1,21 +1,16 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
+import React from 'react';
 import {
   fridgeIngredientsListContainer_magicButton,
   fridgeIngredientsListContainer,
   fridgeIngredientsListContainer_inner,
 } from './FridgeIngredients.css';
 import { FridgeItem } from '../FridgeItem/FridgeItem';
-import { loadMagicFridgeRecipes, loadDetailedRecipesInfo } from '../../data/spoonacularAPI';
-import renderApp from '../../framework/render';
 
 function removeFridgeItem(target, magicFridgeItems, setMagicFridgeItems) {
   const item = target.closest('li');
   const id = item.id;
   if (!item) return;
   setMagicFridgeItems(magicFridgeItems.filter(item => item !== id));
-  renderApp();
 }
 
 export default function FridgeIngredients({
@@ -28,7 +23,7 @@ export default function FridgeIngredients({
   if (magicFridgeItems.length > 0) {
     magicButton = (
       <button
-        class={fridgeIngredientsListContainer_magicButton}
+        className={fridgeIngredientsListContainer_magicButton}
         onClick={() => setIsMagicButtonClicked(true)}
       >
         Magic
@@ -41,8 +36,8 @@ export default function FridgeIngredients({
     </ul>
   );
   return (
-    <div class={fridgeIngredientsListContainer}>
-      <div class={fridgeIngredientsListContainer_inner}>{content}</div>
+    <div className={fridgeIngredientsListContainer}>
+      <div className={fridgeIngredientsListContainer_inner}>{content}</div>
       {magicButton}
     </div>
   );

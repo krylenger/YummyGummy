@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
+import React from 'react';
 import { recipesContainer, mealDescription, recipeCardsContainer } from './DailyMealPlan.css';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard';
 import { openModalRecipe } from '../ModalRecipe';
@@ -53,10 +51,10 @@ export default function DailyMealPlan({
   }
 
   return (
-    <div class={recipesContainer}>
-      <div class={mealDescription}>{contentDescription}</div>
+    <div className={recipesContainer}>
+      <div className={mealDescription}>{contentDescription}</div>
       <ul
-        class={recipeCardsContainer}
+        className={recipeCardsContainer}
         onClick={event => {
           findTargetCardAndOpenModal(
             event,

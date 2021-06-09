@@ -1,16 +1,18 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment } from '../../framework/element';
+import React from 'react';
 import { useAppContext } from '../../context';
+import { radioButtonsContainer } from './GoalSwitch.css';
+
+const goals = [
+  { id: 'goalGain', goal: 'gain' },
+  { id: 'goalLose', goal: 'lose' },
+];
+
 export default function GoalSwitch({ setCurrentGoal }) {
   const currentGoal = useAppContext();
   return (
-    <>
-      {[
-        { id: 'goalGain', goal: 'gain' },
-        { id: 'goalLose', goal: 'lose' },
-      ].map(({ goal, id }) => (
-        <>
+    <div className={radioButtonsContainer}>
+      {goals.map(({ goal, id }) => (
+        <div key={goal}>
           <input
             id={id}
             type="radio"
@@ -18,9 +20,11 @@ export default function GoalSwitch({ setCurrentGoal }) {
             checked={currentGoal === goal}
             onChange={event => setCurrentGoal(event.target.value)}
           />
-          <label For={id}>{goal}</label>
-        </>
+          <label htmlFor={id} key={id}>
+            {goal}
+          </label>
+        </div>
       ))}
-    </>
+    </div>
   );
 }

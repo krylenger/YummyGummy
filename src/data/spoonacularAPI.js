@@ -1,5 +1,4 @@
 import { calculateMaxCalories, isCurrentRecipeInCache } from '../utils';
-import renderApp from '../framework/render';
 
 export function getSearchRecipeUrl(searchedWord) {
   return `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${searchedWord}&number=5`;

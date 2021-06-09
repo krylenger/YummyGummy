@@ -1,7 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment, useState } from '../../framework';
-import { render } from '../../framework';
+import React, { useState } from 'react';
 import styles from './AddFridgeIngredients.css';
 
 function FillFridgeOnChange(value, magicFridgeItems, setMagicFridgeItems) {
@@ -13,20 +10,34 @@ function FillFridgeOnChange(value, magicFridgeItems, setMagicFridgeItems) {
   }
 }
 
+function handleFormSubmit(inputValue, magicFridgeItems, setMagicFridgeItems, setInputValue) {
+  event.preventDefault();
+  FillFridgeOnChange(inputValue, magicFridgeItems, setMagicFridgeItems);
+  setInputValue('');
+}
+
 export default function AddFridgeIngredients({ magicFridgeItems, setMagicFridgeItems }) {
+  const [inputValue, setInputValue] = useState('');
   return (
     <>
       <h2>What's in your fridge?</h2>
-      <p class={styles.getRecipeByIngredientsHeader_p}>
+      <p className={styles.getRecipeByIngredientsHeader_p}>
         Enter up to 5 products you have in the fridge to cook the best meal. Example: apple, milk,
         sugar.
       </p>
-      <input
-        type="text"
-        placeholder="what is in your fridge?"
-        onChange={e => FillFridgeOnChange(e.target.value, magicFridgeItems, setMagicFridgeItems)}
-      />
-      <button type="submit">+add</button>
+      <form
+        onSubmit={() =>
+          handleFormSubmit(inputValue, magicFridgeItems, setMagicFridgeItems, setInputValue)
+        }
+      >
+        <input
+          type="text"
+          placeholder="what is in your fridge?"
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+        />
+        <button type="submit">+add</button>
+      </form>
     </>
   );
 }

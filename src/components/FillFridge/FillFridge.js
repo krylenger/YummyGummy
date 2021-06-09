@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement } from '../../framework';
+import React from 'react';
 import { getRecipeByIngredientsHeader } from './FillFridge.css';
 import AddFridgeIngredients from '../AddFridgeIngredients';
 import FridgeIngredients from '../FridgeIngredients/FridgeIngredients';
@@ -11,7 +9,7 @@ export default function FillFridge({
   setIsMagicButtonClicked,
 }) {
   return (
-    <div class={getRecipeByIngredientsHeader}>
+    <div className={getRecipeByIngredientsHeader}>
       <AddFridgeIngredients
         magicFridgeItems={magicFridgeItems}
         setMagicFridgeItems={setMagicFridgeItems}

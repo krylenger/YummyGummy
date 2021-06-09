@@ -1,5 +1,4 @@
-import { createContext, useContext } from './framework';
-console.log(useContext);
+import { createContext, useContext } from 'react';
 
 export const AppContext = createContext({});
 export const useAppContext = () => useContext(AppContext);

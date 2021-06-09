@@ -1,13 +1,10 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, useState, useEffect } from '../../framework';
-import { getMealPlanByGoal } from './GetMealPlanByGoal.css';
+import React, { useState } from 'react';
 import SetGoal from '../SetGoal';
 import DailyMealPlan from '../DailyMealPlan/DailyMealPlan';
+import { ModalRecipe } from '../ModalRecipe';
+import { getMealPlanByGoal } from './GetMealPlanByGoal.css';
 import { getShortRecipesData, getDetailedRecipesData } from '../../framework/customHooks';
 import { AppContext } from '../../context';
-import { getRapidAPIFetchOptionsData, getUrlOfDetailedRecipe } from '../../data/spoonacularAPI';
-import { ModalRecipe } from '../ModalRecipe';
 
 export default function GetMealPlanByGoal() {
   const {
@@ -22,17 +19,19 @@ export default function GetMealPlanByGoal() {
     setUsersWeight,
     setIsSubmitClicked,
     setError,
+    setIsDataLoading,
   } = getShortRecipesData();
   const { detailedRecipes } = getDetailedRecipesData({
     isShortRecipesInfoLoaded,
     shortRecipesData,
     setError,
+    setIsDataLoading,
   });
   const [isModalRecipeOpened, setIsModalRecipeOpened] = useState(false);
   const [modalRecipeData, setModalRecipeData] = useState([]);
 
   return (
-    <div class={getMealPlanByGoal}>
+    <div className={getMealPlanByGoal}>
       <AppContext.Provider value={currentGoal}>
         <SetGoal
           // currentGoal={currentGoal}

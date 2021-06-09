@@ -1,7 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement } from '../../framework/element';
-import renderApp from '../../framework/render';
+import React from 'react';
 import {
   fridgeItemContainer,
   fridgeItemContainer_button,
@@ -10,9 +7,9 @@ import {
 
 export function FridgeItem(fridgeItemData) {
   return (
-    <li class={fridgeItemContainer} id={fridgeItemData}>
-      <button class={fridgeItemContainer_button}>{'x'}</button>
-      <label class={fridgeItemContainer_label} For={fridgeItemData}>
+    <li className={fridgeItemContainer} id={fridgeItemData} key={fridgeItemData}>
+      <button className={fridgeItemContainer_button}>{'x'}</button>
+      <label className={fridgeItemContainer_label} htmlFor={fridgeItemData}>
         {fridgeItemData}
       </label>
     </li>

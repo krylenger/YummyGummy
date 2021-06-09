@@ -4,7 +4,8 @@
   left: 0px;
   width: 100%;
   height: 100%;
-  background: #c5c5c5;
+  background: #fcfcfc;
+  /* background: #c5c5c5; */
   overflow-y: scroll;
 }
 
@@ -12,22 +13,90 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   height: 100%;
-  padding: 0px 100px;
+  /* padding: 0px 100px; */
 }
 
-.modalRecipeContainer_image {
-  border-radius: 5px;
-  border: 3px solid whitesmoke;
-}
-
-.modalRecipeContainer_nutrientsContainer {
+.modalRecipeContainer_header {
+  display: flex;
+  /* justify-content: row; */
+  /* flex-wrap: wrap; */
   width: 100%;
 }
 
+.modalRecipeContainer_imageContainer {
+  border-radius: 5px;
+  /* border: 3px solid whitesmoke; */
+  height: 20%;
+  min-height: 300px;
+  width: 100%;
+  text-align: center;
+}
+
+.modalRecipeContainer_title {
+  padding: 10px 0px 0px 0px;
+  /* background-color: yellow; */
+}
+
+.modalRecipeContainer_image {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  border-bottom-left-radius: 30%;
+  /* border-bottom-right-radius: 30%; */
+}
+
+.modalRecipeContainer_shortInfoContainer {
+  width: 100%;
+  padding: 0px 0px 0px 5px;
+  /* background-color: red; */
+}
+
+.modalRecipeContainer_ingredientsContainer {
+  background-color: rgba(213, 213, 213, 0.461);
+}
+
+.shortInfo_ingredientInfoContainer {
+  border-bottom: 1px dashed black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.shortInfo_ingredientInfoLine {
+  width: 33%;
+  padding: 5px 0px;
+}
+
+.modalRecipeContainer_nutrientsContainer {
+  background-color: rgb(71, 218, 208);
+  display: flex;
+}
+
+.shortInfo_nutrientInfoLine {
+  /* border: 1px solid black; */
+  margin: 0px 10px;
+}
+
+
 .modalRecipeContainer_instructions {
-  padding: 0px 0px;
+  /* width: 90%; */
+  padding: 10px 20px;
   color: #353535;
-  font-style: italic;
+  font-size: 20px;
+  line-height: 30px;
+  font-family: monospace;
+  background-color: rgba(71, 218, 208, 0.5);
+  border-top-left-radius: 5%;
+  border-bottom-right-radius: 10%;
+}
+
+.instructionsContainer {
+  display: flex;
+}
+
+.instructionsContainer_number {
+  font-weight: bold;
+  font-size: 23px;
+  padding-right: 15px;
 }

@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, useState, useEffect } from '../../framework';
+import React, { useState } from 'react';
 import { searchForRecipeByNameContainer } from './SearchForRecipesByName.css';
 import InputRecipeName from '../InputRecipeName';
 import SearchedRecipes from '../SearchedRecipes';
@@ -13,20 +11,29 @@ export default function SearchForRecipesByName() {
     setSearchedRecipe,
     shortRecipesData,
     isShortRecipesInfoLoaded,
+    isDataLoading,
+    setIsDataLoading,
+    setError,
+    error,
   } = getShortRecipesSearchData();
   const { detailedRecipes } = getDetailedRecipesData({
     isShortRecipesInfoLoaded,
     shortRecipesData,
+    isDataLoading,
+    setIsDataLoading,
+    setError,
   });
   const [isModalRecipeOpened, setIsModalRecipeOpened] = useState(false);
   const [modalRecipeData, setModalRecipeData] = useState([]);
   return (
-    <div class={searchForRecipeByNameContainer}>
+    <div className={searchForRecipeByNameContainer}>
       <InputRecipeName searchedRecipe={searchedRecipe} setSearchedRecipe={setSearchedRecipe} />
       <SearchedRecipes
         detailedRecipes={detailedRecipes}
         setIsModalRecipeOpened={setIsModalRecipeOpened}
         setModalRecipeData={setModalRecipeData}
+        isDataLoading={isDataLoading}
+        error={error}
       />
       {isModalRecipeOpened ? (
         <ModalRecipe

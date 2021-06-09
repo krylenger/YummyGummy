@@ -1,6 +1,4 @@
-/** @jsx createElement */
-/** @jsxFrag createFragment */
-import { createElement, createFragment, useState } from '../../framework';
+import React, { useState } from 'react';
 import { mealDescription, recipeCardsContainer } from './FridgeRecipes.css';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard/RecipeCard';
 import { openModalRecipe, ModalRecipe } from '../ModalRecipe';
@@ -13,14 +11,10 @@ function findElementAndOpenModal(
 ) {
   let card = target.closest('li');
   if (!card) return;
-  // console.log('----');
-  // console.log(detailedRecipes);
-  // console.log('----');
   openModalRecipe(card.id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes);
 }
 
 export default function FridgeRecipes({ detailedRecipes, isMagicFridge, errorInTheFridge }) {
-  // const { isMagicFridge, detailedRecipes, errorInTheFridge } = window.dataStore;
   const [isModalRecipeOpened, setIsModalRecipeOpened] = useState(false);
   const [modalRecipeData, setModalRecipeData] = useState([]);
   let content = '';
@@ -50,9 +44,9 @@ export default function FridgeRecipes({ detailedRecipes, isMagicFridge, errorInT
   }
   return (
     <div>
-      <div class={mealDescription}>{contentDescription}</div>
+      <div className={mealDescription}>{contentDescription}</div>
       <ul
-        class={recipeCardsContainer}
+        className={recipeCardsContainer}
         onClick={event =>
           findElementAndOpenModal(
             event.target,

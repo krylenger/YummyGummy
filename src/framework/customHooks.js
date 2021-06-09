@@ -1,4 +1,4 @@
-import { useEffect, useState } from '../framework';
+import { useEffect, useState } from 'react';
 import { calculateMaxCalories, isCurrentRecipeInCache } from '../utils';
 import {
   getRapidAPIFetchOptionsData,
@@ -14,13 +14,14 @@ export function getShortRecipesData() {
   const [shortRecipesData, setShortRecipesData] = useState([]);
   const [dailyMealPlan, setDailyMealPlan] = useState('');
   const [error, setError] = useState('');
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   useEffect(() => {
     if (isSubmitClicked) {
       let promise = loadDailyMealPlan();
       promise.then(({ meals, nutrients }) => {
-        setIsShortRecipesInfoLoaded(true);
         setShortRecipesData({ results: meals });
+        setIsShortRecipesInfoLoaded(true);
       });
       function loadDailyMealPlan() {
         const maxCalories = calculateMaxCalories(currentGoal, usersWeight);
@@ -39,10 +40,10 @@ export function getShortRecipesData() {
           .catch(err => {
             setError(err);
           })
-          .finally(() => console.log('loadedShortRecipes'));
+          .finally(() => setIsSubmitClicked(false));
       }
     }
-  }, [isSubmitClicked, currentGoal, usersWeight]);
+  }, [isSubmitClicked]);
 
   return {
     currentGoal,
@@ -56,6 +57,7 @@ export function getShortRecipesData() {
     setUsersWeight,
     setIsSubmitClicked,
     setError,
+    setIsDataLoading,
   };
 }
 
@@ -64,16 +66,16 @@ export function getShortRecipesFridgeData() {
   const [magicFridgeItems, setMagicFridgeItems] = useState([]);
   const [errorInTheFridge, setErrorInTheFridge] = useState(false);
   const [isMagicFridge, setIsMagicFridge] = useState(false);
-  const [err, setErr] = useState('');
   const [isShortRecipesInfoLoaded, setIsShortRecipesInfoLoaded] = useState(false);
   const [shortRecipesData, setShortRecipesData] = useState([]);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   useEffect(() => {
     if (isMagicButtonClicked) {
       let promise = loadMagicFridgeRecipes();
       promise.then(data => {
-        setIsShortRecipesInfoLoaded(true);
         setShortRecipesData({ results: data });
+        setIsShortRecipesInfoLoaded(true);
       });
 
       function loadMagicFridgeRecipes() {
@@ -100,23 +102,23 @@ export function getShortRecipesFridgeData() {
             }
           })
           .catch(err => {
-            setErr('Ohh.. error has happened during short recipes loading');
+            setErrorInTheFridge('Ohh.. error has happened during short recipes loading');
           })
-          .finally(() => console.log('shortRecipesDataLoaded'));
+          .finally(() => setIsMagicButtonClicked(false));
       }
     }
-  }, [isMagicButtonClicked, magicFridgeItems]);
-
+  }, [isMagicButtonClicked]);
   return {
     isMagicButtonClicked,
     magicFridgeItems,
     isMagicFridge,
     errorInTheFridge,
-    err,
     shortRecipesData,
     isShortRecipesInfoLoaded,
     setMagicFridgeItems,
     setIsMagicButtonClicked,
+    setError: setErrorInTheFridge,
+    setIsDataLoading,
   };
 }
 
@@ -128,20 +130,16 @@ export function getShortRecipesSearchData() {
   const [shortRecipesData, setShortRecipesData] = useState([]);
   const [testa, setTesta] = useState(0);
   useEffect(() => {
-    // window.dataStore.error = null;
     if (searchedRecipe) {
-      console.log('yess');
-      // setError(null);
-      // setIsDataLoading(true);
+      setError(null);
+      setIsDataLoading(true);
       let promise = validateAndLoadData();
       promise.then(({ data: { results } }) => {
-        setIsShortRecipesInfoLoaded(true);
         setShortRecipesData({ results });
+        setIsShortRecipesInfoLoaded(true);
       });
     }
-    
     // window.dataStore.isDataLoading = true;
-    // renderApp();
     // validateAndLoadData()
     //   .then(({ error, data }) => {
     //     // window.dataStore.isDataLoading = false;
@@ -180,32 +178,38 @@ export function getShortRecipesSearchData() {
           throw new Error(`Error` + response.status + response.json);
         })
         .then(data => {
-          setShortRecipesData({ data });
-          console.log(shortRecipesData);
-          console.log('data');
+          if (!data.results.length) {
+            setError('Please enter valid recipe name.');
+          }
+          setShortRecipesData(data);
           return { data };
         });
       // }
       return Promise.resolve({});
     }
-    // console.log('aaa');
-    // console.log(shortRecipesData);
-    // console.log('aaa');
   }, [searchedRecipe]);
   return {
     searchedRecipe,
     setSearchedRecipe,
     shortRecipesData,
     isShortRecipesInfoLoaded,
+    isDataLoading,
+    setIsDataLoading,
+    setError,
+    error,
   };
 }
 
-export function getDetailedRecipesData({ isShortRecipesInfoLoaded, shortRecipesData, setError }) {
+export function getDetailedRecipesData({
+  isShortRecipesInfoLoaded,
+  shortRecipesData,
+  setIsDataLoading,
+  setError,
+}) {
   const [detailedRecipes, setDetailedRecipes] = useState([]);
 
   useEffect(() => {
     if (isShortRecipesInfoLoaded) {
-      console.log('works');
       loadDetailedRecipesInfo(shortRecipesData);
       function loadDetailedRecipesInfo({ results }) {
         const urlsOfDetailedRecipes = results.map(result => getUrlOfDetailedRecipe(result.id));
@@ -214,11 +218,14 @@ export function getDetailedRecipesData({ isShortRecipesInfoLoaded, shortRecipesD
           .then(responses => Promise.all(responses.map(r => r.json())))
           .then(data => {
             if (!data.length) {
-              throw new Error('Please enter valid ingredient.');
+              // throw new Error('Please enter valid ingredient.');
             }
+            console.log(data);
+            setIsDataLoading(false);
             setDetailedRecipes(data);
           })
           .catch(error => {
+            console.log(error);
             setError('Error inside loadDetailedRecipesInfo');
           })
           .finally(() => console.log('loadedDetailedRecipes'));
