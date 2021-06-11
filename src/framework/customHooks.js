@@ -6,7 +6,7 @@ import {
   getSearchRecipeUrl,
 } from '../data/spoonacularAPI';
 
-export function getShortRecipesData() {
+export function getShortRecipesMealData() {
   const [currentGoal, setCurrentGoal] = useState('gain');
   const [usersWeight, setUsersWeight] = useState('22');
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
@@ -19,7 +19,7 @@ export function getShortRecipesData() {
   useEffect(() => {
     if (isSubmitClicked) {
       let promise = loadDailyMealPlan();
-      promise.then(({ meals, nutrients }) => {
+      promise.then(({ meals }) => {
         setShortRecipesData({ results: meals });
         setIsShortRecipesInfoLoaded(true);
       });
@@ -128,7 +128,7 @@ export function getShortRecipesSearchData() {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [isShortRecipesInfoLoaded, setIsShortRecipesInfoLoaded] = useState(false);
   const [shortRecipesData, setShortRecipesData] = useState([]);
-  const [testa, setTesta] = useState(0);
+  const [shortRecipesDataCache, setShortRecipesDataCache] = useState([]);
   useEffect(() => {
     if (searchedRecipe) {
       setError(null);
@@ -139,53 +139,29 @@ export function getShortRecipesSearchData() {
         setIsShortRecipesInfoLoaded(true);
       });
     }
-    // window.dataStore.isDataLoading = true;
-    // validateAndLoadData()
-    //   .then(({ error, data }) => {
-    //     // window.dataStore.isDataLoading = false;
-    //     setIsDataLoading(false);
-    //     if (error) {
-    //       // window.dataStore.error = error;
-    //       setError(error);
-    //     } else if (data) {
-    //       if (!data.results.length) {
-    //         throw new Error('wrong input');
-    //       }
-    //       // window.dataStore.recipesInCache[recipeName] = data;
-    //       // loadDetailedRecipesInfo(data, 'detailedSearchedRecipes');
-    //       setShortRecipesData(data);
-    //       console.log(shortRecipesData);
-    //     } else {
-    //       // loadDetailedRecipesInfo(
-    //       //   window.dataStore.recipesInCache[recipeName],
-    //       //   'detailedSearchedRecipes',
-    //       // );
-    //       console.log('here is space for cache');
-    //     }
-    //   })
-    //   .catch(err => {
-    //     // window.dataStore.error = `Ooops.. ${err}`;
-    //     setError(`Oops, error ... ${err}`);
-    //   })
-    //   .finally(() => console.log('shortRecipesLoaded'));
+
     function validateAndLoadData() {
       const url = getSearchRecipeUrl(searchedRecipe);
 
-      // if (!isCurrentRecipeInCache()) {
-      return fetch(url, getRapidAPIFetchOptionsData())
-        .then(response => {
-          if (response.ok) return response.json();
-          throw new Error(`Error` + response.status + response.json);
-        })
-        .then(data => {
-          if (!data.results.length) {
-            setError('Please enter valid recipe name.');
-          }
-          setShortRecipesData(data);
-          return { data };
-        });
-      // }
-      return Promise.resolve({});
+      if (!isCurrentRecipeInCache(searchedRecipe, shortRecipesDataCache)) {
+        return fetch(url, getRapidAPIFetchOptionsData())
+          .then(response => {
+            if (response.ok) return response.json();
+            throw new Error(`Error` + response.status + response.json);
+          })
+          .then(data => {
+            if (!data.results.length) {
+              setError('Please enter valid recipe name.');
+            }
+            setShortRecipesData(data);
+            setShortRecipesDataCache(prevState => ({
+              ...prevState,
+              [searchedRecipe]: data,
+            }));
+            return { data };
+          });
+      }
+      return Promise.resolve({ data: shortRecipesDataCache[searchedRecipe] });
     }
   }, [searchedRecipe]);
   return {
@@ -197,6 +173,7 @@ export function getShortRecipesSearchData() {
     setIsDataLoading,
     setError,
     error,
+    shortRecipesDataCache,
   };
 }
 
@@ -220,15 +197,13 @@ export function getDetailedRecipesData({
             if (!data.length) {
               // throw new Error('Please enter valid ingredient.');
             }
-            console.log(data);
             setIsDataLoading(false);
             setDetailedRecipes(data);
           })
           .catch(error => {
-            console.log(error);
             setError('Error inside loadDetailedRecipesInfo');
-          })
-          .finally(() => console.log('loadedDetailedRecipes'));
+          });
+        // .finally(() => console.log('loadedDetailedRecipes'));
       }
     }
   }, [isShortRecipesInfoLoaded, shortRecipesData]);

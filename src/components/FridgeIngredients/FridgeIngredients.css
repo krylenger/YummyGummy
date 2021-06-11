@@ -14,10 +14,11 @@
 }
 
 .fridgeIngredientsListContainer_magicButton {
-  position: relative;
-  top: 1px;
-  left: 28px;
+  position: static;
+  /* top: 1px;
+  left: 28px; */
   width: 49px;
+  margin-left: 27px;
   background: white;
   border-radius: 5px;
   cursor: pointer;

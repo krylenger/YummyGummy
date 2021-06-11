@@ -42,7 +42,7 @@ export function RecipeCard({
   proteinAmount,
 }) {
   return (
-    <li className={recipeCard} id={id} key={id}>
+    <li className={recipeCard} id={id} key={id} tabIndex={0}>
       <h4>{title}</h4>
       <img className={recipeCard_image} src={image} alt={title} />
       <div className={recipeCard_nutrientInfoLine}>

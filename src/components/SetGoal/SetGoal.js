@@ -12,7 +12,6 @@ function handleFormChange(setIsSubmitClicked) {
 }
 
 export default function SetGoal({
-  // currentGoal,
   setCurrentGoal,
   usersWeight,
   setUsersWeight,

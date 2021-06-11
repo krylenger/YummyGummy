@@ -1,0 +1,14 @@
+.modalRecipeContainer_ingredientsContainer {
+  background-color: rgba(213, 213, 213, 0.461);
+}
+
+.shortInfo_ingredientInfoContainer {
+  border-bottom: 1px dashed black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.shortInfo_ingredientInfoLine {
+  width: 33%;
+  padding: 5px 0px;
+}

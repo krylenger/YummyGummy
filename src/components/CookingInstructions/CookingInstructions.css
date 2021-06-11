@@ -1,0 +1,9 @@
+.instructionsContainer {
+  display: flex;
+}
+
+.instructionsContainer_number {
+  font-weight: bold;
+  font-size: 23px;
+  padding-right: 15px;
+}

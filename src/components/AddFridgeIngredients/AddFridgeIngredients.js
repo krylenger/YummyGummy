@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMagicFridgeItemsContext } from '../../context';
 import styles from './AddFridgeIngredients.css';
 
 function FillFridgeOnChange(value, magicFridgeItems, setMagicFridgeItems) {
@@ -16,8 +17,9 @@ function handleFormSubmit(inputValue, magicFridgeItems, setMagicFridgeItems, set
   setInputValue('');
 }
 
-export default function AddFridgeIngredients({ magicFridgeItems, setMagicFridgeItems }) {
+export default function AddFridgeIngredients({ setMagicFridgeItems }) {
   const [inputValue, setInputValue] = useState('');
+  const magicFridgeItems = useMagicFridgeItemsContext();
   return (
     <>
       <h2>What's in your fridge?</h2>

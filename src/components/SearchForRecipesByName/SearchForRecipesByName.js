@@ -15,6 +15,7 @@ export default function SearchForRecipesByName() {
     setIsDataLoading,
     setError,
     error,
+    shortRecipesDataCache,
   } = getShortRecipesSearchData();
   const { detailedRecipes } = getDetailedRecipesData({
     isShortRecipesInfoLoaded,
@@ -30,10 +31,10 @@ export default function SearchForRecipesByName() {
       <InputRecipeName searchedRecipe={searchedRecipe} setSearchedRecipe={setSearchedRecipe} />
       <SearchedRecipes
         detailedRecipes={detailedRecipes}
-        setIsModalRecipeOpened={setIsModalRecipeOpened}
-        setModalRecipeData={setModalRecipeData}
         isDataLoading={isDataLoading}
         error={error}
+        setIsModalRecipeOpened={setIsModalRecipeOpened}
+        setModalRecipeData={setModalRecipeData}
       />
       {isModalRecipeOpened ? (
         <ModalRecipe

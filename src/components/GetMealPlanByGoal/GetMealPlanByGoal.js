@@ -3,8 +3,8 @@ import SetGoal from '../SetGoal';
 import DailyMealPlan from '../DailyMealPlan/DailyMealPlan';
 import { ModalRecipe } from '../ModalRecipe';
 import { getMealPlanByGoal } from './GetMealPlanByGoal.css';
-import { getShortRecipesData, getDetailedRecipesData } from '../../framework/customHooks';
-import { AppContext } from '../../context';
+import { getShortRecipesMealData, getDetailedRecipesData } from '../../framework/customHooks';
+import { GoalContext } from '../../context';
 
 export default function GetMealPlanByGoal() {
   const {
@@ -20,7 +20,7 @@ export default function GetMealPlanByGoal() {
     setIsSubmitClicked,
     setError,
     setIsDataLoading,
-  } = getShortRecipesData();
+  } = getShortRecipesMealData();
   const { detailedRecipes } = getDetailedRecipesData({
     isShortRecipesInfoLoaded,
     shortRecipesData,
@@ -32,15 +32,14 @@ export default function GetMealPlanByGoal() {
 
   return (
     <div className={getMealPlanByGoal}>
-      <AppContext.Provider value={currentGoal}>
+      <GoalContext.Provider value={currentGoal}>
         <SetGoal
-          // currentGoal={currentGoal}
-          setCurrentGoal={setCurrentGoal}
           usersWeight={usersWeight}
+          setCurrentGoal={setCurrentGoal}
           setUsersWeight={setUsersWeight}
           setIsSubmitClicked={setIsSubmitClicked}
         />
-      </AppContext.Provider>
+      </GoalContext.Provider>
       <DailyMealPlan
         dailyMealPlan={dailyMealPlan}
         detailedRecipes={detailedRecipes}

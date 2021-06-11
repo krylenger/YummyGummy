@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppContext } from '../../context';
+import { useGoalContext } from '../../context';
 import { radioButtonsContainer } from './GoalSwitch.css';
 
 const goals = [
@@ -8,7 +8,7 @@ const goals = [
 ];
 
 export default function GoalSwitch({ setCurrentGoal }) {
-  const currentGoal = useAppContext();
+  const currentGoal = useGoalContext();
   return (
     <div className={radioButtonsContainer}>
       {goals.map(({ goal, id }) => (

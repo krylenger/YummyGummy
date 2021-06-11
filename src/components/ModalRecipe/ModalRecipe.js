@@ -8,14 +8,12 @@ import {
   shortInfo_nutrientInfoLine,
   modalRecipeContainer_instructions,
   modalRecipeContainer_header,
-  modalRecipeContainer_ingredientsContainer,
   modalRecipeContainer_nutrientsContainer,
-  shortInfo_ingredientInfoContainer,
-  shortInfo_ingredientInfoLine,
-  instructionsContainer,
   modalRecipeContainer_title,
-  instructionsContainer_number,
+  button_closeModal,
 } from './ModalRecipe.css';
+import CookingInstructions from '../CookingInstructions';
+import IngredientsList from '../IngredientsList';
 import { getNutrientAmount } from '../../utils';
 
 export function getModalRecipeData(targetId, detailedRecipes) {
@@ -40,8 +38,11 @@ export function getPreparedModalRecipeData({
   nutrition: { nutrients, ingredients },
   readyInMinutes,
   title,
-  analyzedInstructions: [{ steps }],
+  analyzedInstructions,
 }) {
+  const steps = analyzedInstructions.length
+    ? analyzedInstructions[0].steps
+    : [{ number: '', step: 'Sorry, no instructions for this recipe.' }];
   const caloriesAmount = getNutrientAmount('Calories', nutrients);
   const fatAmount = getNutrientAmount('Fat', nutrients);
   const carbohydratesAmount = getNutrientAmount('Carbohydrates', nutrients);
@@ -104,33 +105,17 @@ export function CreateModalRecipeWindow(
                 <p>{carbohydratesAmount}</p>
               </div>
             </div>
-            <div className={modalRecipeContainer_ingredientsContainer}>
-              <h3>Ingredients</h3>
-              {ingredients.map(ingredient => (
-                <div key={ingredient.id} className={shortInfo_ingredientInfoContainer}>
-                  <p className={shortInfo_ingredientInfoLine}>{ingredient.name}</p>
-                  <p className={shortInfo_ingredientInfoLine}>
-                    {ingredient.amount}
-                    {`  `}
-                    {ingredient.unit}
-                  </p>
-                </div>
-              ))}
-            </div>
+            <IngredientsList ingredients={ingredients} />
             <p>Ready in: {readyInMinutes} minutes.</p>
           </div>
         </div>
         <div className={modalRecipeContainer_instructions}>
           <div>
-            {steps.map(({ step, number }) => (
-              <div key={step} className={instructionsContainer}>
-                <p className={instructionsContainer_number}>{number}</p>
-                <p>{step}</p>
-              </div>
-            ))}
+            <CookingInstructions steps={steps} />
           </div>
         </div>
         <button
+          className={button_closeModal}
           onClick={() => {
             setIsModalRecipeOpened(false);
           }}

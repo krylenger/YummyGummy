@@ -5,9 +5,9 @@ import {
   fridgeItemContainer_label,
 } from './FridgeItem.css';
 
-export function FridgeItem(fridgeItemData) {
+export function FridgeItem(fridgeItemData, index) {
   return (
-    <li className={fridgeItemContainer} id={fridgeItemData} key={fridgeItemData}>
+    <li className={fridgeItemContainer} id={fridgeItemData} key={index}>
       <button className={fridgeItemContainer_button}>{'x'}</button>
       <label className={fridgeItemContainer_label} htmlFor={fridgeItemData}>
         {fridgeItemData}

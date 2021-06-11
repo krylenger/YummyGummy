@@ -3,6 +3,7 @@ import { getRecipeByIngredientsContainer } from './GetRecipeByIngredients.css';
 import FillFridge from '../FillFridge';
 import FridgeRecipes from '../FridgeRecipes';
 import { getDetailedRecipesData, getShortRecipesFridgeData } from '../../framework/customHooks';
+import { MagicFridgeItemsContext } from '../../context';
 
 export default function GetRecipeByIngredients() {
   const {
@@ -26,11 +27,12 @@ export default function GetRecipeByIngredients() {
   });
   return (
     <div className={getRecipeByIngredientsContainer}>
-      <FillFridge
-        magicFridgeItems={magicFridgeItems}
-        setMagicFridgeItems={setMagicFridgeItems}
-        setIsMagicButtonClicked={setIsMagicButtonClicked}
-      />
+      <MagicFridgeItemsContext.Provider value={magicFridgeItems}>
+        <FillFridge
+          setMagicFridgeItems={setMagicFridgeItems}
+          setIsMagicButtonClicked={setIsMagicButtonClicked}
+        />
+      </MagicFridgeItemsContext.Provider>
       <FridgeRecipes
         detailedRecipes={detailedRecipes}
         isMagicFridge={isMagicFridge}

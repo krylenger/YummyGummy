@@ -55,6 +55,16 @@ export default function FridgeRecipes({ detailedRecipes, isMagicFridge, errorInT
             detailedRecipes,
           )
         }
+        onKeyDown={event => {
+          if (event.key === 'Enter' || event.code === 'Space' || event.key === 'EnterNum') {
+            findElementAndOpenModal(
+              event.target,
+              setIsModalRecipeOpened,
+              setModalRecipeData,
+              detailedRecipes,
+            );
+          }
+        }}
       >
         {content}
       </ul>

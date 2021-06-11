@@ -63,6 +63,16 @@ export default function DailyMealPlan({
             detailedRecipes,
           );
         }}
+        onKeyDown={event => {
+          if (event.key === 'Enter' || event.code === 'Space' || event.key === 'EnterNum') {
+            findTargetCardAndOpenModal(
+              event,
+              setIsModalRecipeOpened,
+              setModalRecipeData,
+              detailedRecipes,
+            );
+          }
+        }}
       >
         {content}
       </ul>

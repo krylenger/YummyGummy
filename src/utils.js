@@ -31,9 +31,8 @@ export function calculateMaxCalories(currentGoal, usersWeight) {
   return caloriesAmount;
 }
 
-export function isCurrentRecipeInCache() {
-  const { recipesInCache, searchedRecipe } = window.dataStore;
-  return Boolean(recipesInCache[searchedRecipe]);
+export function isCurrentRecipeInCache(searchedRecipe, shortRecipesDataCache) {
+  return Boolean(shortRecipesDataCache[searchedRecipe]);
 }
 
 export const isFunction = func => typeof func === 'function';
