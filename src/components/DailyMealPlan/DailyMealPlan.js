@@ -1,7 +1,7 @@
 import React from 'react';
-import { recipesContainer, mealDescription, recipeCardsContainer } from './DailyMealPlan.css';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard';
 import { openModalRecipe } from '../ModalRecipe';
+import { recipesContainer, mealDescription, recipeCardsContainer } from './DailyMealPlan.css';
 
 function findTargetCardAndOpenModal(
   { target },
@@ -33,10 +33,10 @@ export default function DailyMealPlan({
         <div>
           <p>Here is your daily meal plan: breakfast, lunch and dinner.</p>
           <p>Enjoy it!</p>
-          <p>Calories: ${calories}</p>
-          <p>Protein: ${protein}</p>
-          <p>Fat: ${fat}</p>
-          <p>Carbohydrates: ${carbohydrates}</p>
+          <p>Calories: {calories}</p>
+          <p>Protein: {protein}</p>
+          <p>Fat: {fat}</p>
+          <p>Carbohydrates: {carbohydrates}</p>
         </div>
       </>
     );

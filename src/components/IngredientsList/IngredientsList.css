@@ -2,10 +2,15 @@
   background-color: rgba(213, 213, 213, 0.461);
 }
 
+.modalRecipeContainer_ingredientsHeader {
+  padding: 0px 10px;
+}
+
 .shortInfo_ingredientInfoContainer {
-  border-bottom: 1px dashed black;
   display: flex;
   justify-content: space-between;
+  margin: 0px 10px;
+  border-bottom: 1px dashed black;
 }
 
 .shortInfo_ingredientInfoLine {

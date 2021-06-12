@@ -3,6 +3,8 @@ import { calculateMaxCalories, isCurrentRecipeInCache } from '../utils';
 import {
   getRapidAPIFetchOptionsData,
   getUrlOfDetailedRecipe,
+  getMealPlanRecipeUrl,
+  getFridgeRecipeUrl,
   getSearchRecipeUrl,
 } from '../data/spoonacularAPI';
 
@@ -18,17 +20,14 @@ export function getShortRecipesMealData() {
 
   useEffect(() => {
     if (isSubmitClicked) {
-      let promise = loadDailyMealPlan();
+      const promise = loadDailyMealPlan();
       promise.then(({ meals }) => {
         setShortRecipesData({ results: meals });
         setIsShortRecipesInfoLoaded(true);
       });
       function loadDailyMealPlan() {
         const maxCalories = calculateMaxCalories(currentGoal, usersWeight);
-        return fetch(
-          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate?timeFrame=day&targetCalories=${maxCalories}`,
-          getRapidAPIFetchOptionsData(),
-        )
+        return fetch(getMealPlanRecipeUrl(maxCalories), getRapidAPIFetchOptionsData())
           .then(response => {
             if (response.ok) return response.json();
             throw new Error(`Error` + response.status + response.json);
@@ -77,16 +76,12 @@ export function getShortRecipesFridgeData() {
         setShortRecipesData({ results: data });
         setIsShortRecipesInfoLoaded(true);
       });
-
       function loadMagicFridgeRecipes() {
         let ingredientsQueryString = magicFridgeItems.reduce(
           (final, current) => final.concat(current + '%2C'),
           '',
         );
-        return fetch(
-          `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${ingredientsQueryString}&number=4&ignorePantry=false&ranking=1`,
-          getRapidAPIFetchOptionsData(),
-        )
+        return fetch(getFridgeRecipeUrl(ingredientsQueryString), getRapidAPIFetchOptionsData())
           .then(response => {
             if (response.ok) return response.json();
             throw new Error(`Error` + response.status + response.json);
@@ -201,9 +196,8 @@ export function getDetailedRecipesData({
             setDetailedRecipes(data);
           })
           .catch(error => {
-            setError('Error inside loadDetailedRecipesInfo');
+            setError('Error during loading DetailedRecipesInfo');
           });
-        // .finally(() => console.log('loadedDetailedRecipes'));
       }
     }
   }, [isShortRecipesInfoLoaded, shortRecipesData]);

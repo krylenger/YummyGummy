@@ -15,7 +15,6 @@ export default function SearchForRecipesByName() {
     setIsDataLoading,
     setError,
     error,
-    shortRecipesDataCache,
   } = getShortRecipesSearchData();
   const { detailedRecipes } = getDetailedRecipesData({
     isShortRecipesInfoLoaded,

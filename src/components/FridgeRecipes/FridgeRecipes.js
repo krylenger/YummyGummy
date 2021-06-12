@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { mealDescription, recipeCardsContainer } from './FridgeRecipes.css';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard/RecipeCard';
 import { openModalRecipe, ModalRecipe } from '../ModalRecipe';
+import { mealDescription, recipeCardsContainer } from './FridgeRecipes.css';
 
 function findElementAndOpenModal(
   target,

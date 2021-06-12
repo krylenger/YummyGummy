@@ -10,11 +10,9 @@ export default function GetMealPlanByGoal() {
   const {
     currentGoal,
     usersWeight,
-    isSubmitClicked,
-    isShortRecipesInfoLoaded,
-    shortRecipesData,
     dailyMealPlan,
-    error,
+    shortRecipesData,
+    isShortRecipesInfoLoaded,
     setCurrentGoal,
     setUsersWeight,
     setIsSubmitClicked,

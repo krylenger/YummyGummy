@@ -9,7 +9,9 @@ import {
   modalRecipeContainer_instructions,
   modalRecipeContainer_header,
   modalRecipeContainer_nutrientsContainer,
+  nutrientInfoLine_bold,
   modalRecipeContainer_title,
+  shortInfo_readyIn,
   button_closeModal,
 } from './ModalRecipe.css';
 import CookingInstructions from '../CookingInstructions';
@@ -64,9 +66,7 @@ export function getPreparedModalRecipeData({
 
 export function CreateModalRecipeWindow(
   {
-    id,
     image,
-    instructions,
     readyInMinutes,
     title,
     caloriesAmount,
@@ -89,24 +89,24 @@ export function CreateModalRecipeWindow(
           <div className={modalRecipeContainer_shortInfoContainer}>
             <div className={modalRecipeContainer_nutrientsContainer}>
               <div className={shortInfo_nutrientInfoLine}>
-                <p>Calories:</p>
+                <p className={nutrientInfoLine_bold}>Calories:</p>
                 <p>{caloriesAmount}</p>
               </div>
               <div className={shortInfo_nutrientInfoLine}>
-                <p>Protein:</p>
+                <p className={nutrientInfoLine_bold}>Protein:</p>
                 <p>{proteinAmount}</p>
               </div>
               <div className={shortInfo_nutrientInfoLine}>
-                <p>Fat:</p>
+                <p className={nutrientInfoLine_bold}>Fat:</p>
                 <p>{fatAmount}</p>
               </div>
               <div className={shortInfo_nutrientInfoLine}>
-                <p>Carbohydrates:</p>
+                <p className={nutrientInfoLine_bold}>Carbohydrates:</p>
                 <p>{carbohydratesAmount}</p>
               </div>
             </div>
             <IngredientsList ingredients={ingredients} />
-            <p>Ready in: {readyInMinutes} minutes.</p>
+            <p className={shortInfo_readyIn}>Ready in: {readyInMinutes} minutes.</p>
           </div>
         </div>
         <div className={modalRecipeContainer_instructions}>

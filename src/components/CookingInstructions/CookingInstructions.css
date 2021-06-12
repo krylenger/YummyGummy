@@ -3,7 +3,7 @@
 }
 
 .instructionsContainer_number {
-  font-weight: bold;
-  font-size: 23px;
   padding-right: 15px;
+  font-size: 23px;
+  font-weight: bold;
 }

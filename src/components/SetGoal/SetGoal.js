@@ -3,6 +3,7 @@ import {
   getMealPlanByGoalHeader,
   getMealPlanByGoalHeader_h2,
   getMealPlanByGoalHeader_p,
+  usersWeightInput,
 } from './SetGoal.css';
 import GoalSwitch from '../GoalSwitch';
 
@@ -31,9 +32,10 @@ export default function SetGoal({
         </p>
         <h4>What's your weight?</h4>
         <input
+          className={usersWeightInput}
           type="number"
           value={usersWeight}
-          placeholder="your weight"
+          placeholder="kg"
           onChange={e => setUsersWeight(e.target.value)}
         />
         <button type="submit">Submit</button>
