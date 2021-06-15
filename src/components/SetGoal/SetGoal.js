@@ -3,10 +3,10 @@ import {
   getMealPlanByGoalHeader,
   getMealPlanByGoalHeader_sectionTitle,
   getMealPlanByGoalHeader_info,
-  usersWeightInput,
+  userWeightInput,
 } from './SetGoal.css';
 import GoalSwitch from '../GoalSwitch';
-import { displayUsersActivityLevelAsString } from '../../utils';
+import { displayUserActivityLevelAsString } from '../../utils';
 
 function handleFormChange(setIsSubmitClicked) {
   event.preventDefault();
@@ -15,14 +15,14 @@ function handleFormChange(setIsSubmitClicked) {
 
 export default function SetGoal({
   setCurrentGoal,
-  usersWeight,
-  usersHeight,
-  usersAge,
-  usersActivity,
-  setUsersWeight,
-  setUsersHeight,
-  setUsersAge,
-  setUsersActivity,
+  userWeight,
+  userHeight,
+  userAge,
+  userActivity,
+  setUserWeight,
+  setUserHeight,
+  setUserAge,
+  setUserActivity,
   setIsSubmitClicked,
 }) {
   return (
@@ -38,44 +38,43 @@ export default function SetGoal({
 
         <h4>What's your weight?</h4>
         <input
-          className={usersWeightInput}
+          className={userWeightInput}
           type="number"
-          value={usersWeight}
+          value={userWeight}
           placeholder="kg"
-          onChange={e => setUsersWeight(e.target.value)}
+          onChange={e => setUserWeight(e.target.value)}
           required
         />
         <h4>What's your height?</h4>
         <input
-          className={usersWeightInput}
+          className={userWeightInput}
           type="number"
-          value={usersHeight}
+          value={userHeight}
           placeholder="cm"
-          onChange={e => setUsersHeight(e.target.value)}
+          onChange={e => setUserHeight(e.target.value)}
           required
         />
         <h4>How old are you?</h4>
         <input
-          className={usersWeightInput}
+          className={userWeightInput}
           type="number"
-          value={usersAge}
+          value={userAge}
           placeholder="years"
-          onChange={e => setUsersAge(e.target.value)}
+          onChange={e => setUserAge(e.target.value)}
           required
         />
         <h4>What's your activity level?</h4>
         <input
-          // className={usersWeightInput}
           type="range"
           min="1"
           max="5"
           step="1"
-          value={usersActivity}
+          value={userActivity}
           placeholder="activity"
-          onChange={e => setUsersActivity(e.target.value)}
+          onChange={e => setUserActivity(e.target.value)}
           required
         />
-        <p>{displayUsersActivityLevelAsString(usersActivity)}</p>
+        <p>{displayUserActivityLevelAsString(userActivity)}</p>
         <button type="submit">Submit</button>
       </form>
     </div>

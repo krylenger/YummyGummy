@@ -10,12 +10,6 @@ function FillFridgeOnChange(value, magicFridgeItems, setMagicFridgeItems) {
   }
 }
 
-function handleFormSubmit(inputValue, magicFridgeItems, setMagicFridgeItems, setInputValue) {
-  event.preventDefault();
-  FillFridgeOnChange(inputValue, magicFridgeItems, setMagicFridgeItems);
-  setInputValue('');
-}
-
 export default function AddFridgeIngredients({ setMagicFridgeItems }) {
   const [inputValue, setInputValue] = useState('');
   const magicFridgeItems = useMagicFridgeItemsContext();
@@ -27,9 +21,11 @@ export default function AddFridgeIngredients({ setMagicFridgeItems }) {
         sugar.
       </p>
       <form
-        onSubmit={() =>
-          handleFormSubmit(inputValue, magicFridgeItems, setMagicFridgeItems, setInputValue)
-        }
+        onSubmit={event => {
+          event.preventDefault();
+          FillFridgeOnChange(inputValue, magicFridgeItems, setMagicFridgeItems);
+          setInputValue('');
+        }}
       >
         <input
           type="text"

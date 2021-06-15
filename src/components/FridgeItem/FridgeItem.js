@@ -8,7 +8,7 @@ import {
 export function FridgeItem({ fridgeItemData }) {
   return (
     <li className={fridgeItemContainer} id={fridgeItemData}>
-      <button className={fridgeItemContainer_removeButton}>{'x'}</button>
+      <button className={fridgeItemContainer_removeButton}>x</button>
       <label className={fridgeItemContainer_itemName} htmlFor={fridgeItemData}>
         {fridgeItemData}
       </label>

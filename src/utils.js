@@ -3,13 +3,7 @@ export function getNutrientAmount(nutrientName, arrayOfAllNutrients) {
   return searchedNutrient.amount;
 }
 
-export function calculateMaxCalories(
-  currentGoal,
-  usersWeight,
-  usersHeight,
-  usersAge,
-  usersActivity,
-) {
+export function calculateMaxCalories(currentGoal, userWeight, userHeight, userAge, userActivity) {
   const loseGoal = 'lose';
   const gainGoal = 'gain';
   let caloriesAmount;
@@ -19,12 +13,12 @@ export function calculateMaxCalories(
   let ageCoefficient;
   let activityCoefficient;
 
-  usersWeight = parseInt(usersWeight);
-  usersHeight = parseInt(usersHeight);
-  usersAge = parseInt(usersAge);
-  usersActivity = parseInt(usersActivity);
+  userWeight = parseInt(userWeight);
+  userHeight = parseInt(userHeight);
+  userAge = parseInt(userAge);
+  userActivity = parseInt(userActivity);
 
-  switch (usersActivity) {
+  switch (userActivity) {
     case 1:
       activityCoefficient = 1.2;
       break;
@@ -56,18 +50,18 @@ export function calculateMaxCalories(
 
   caloriesAmount =
     (goalCoefficient +
-      weightCoefficient * usersWeight +
-      heightCoefficient * usersHeight -
-      ageCoefficient * usersAge) *
+      weightCoefficient * userWeight +
+      heightCoefficient * userHeight -
+      ageCoefficient * userAge) *
     activityCoefficient;
 
   return caloriesAmount;
 }
 
-export function displayUsersActivityLevelAsString(usersActivity) {
+export function displayUserActivityLevelAsString(userActivity) {
   let activityLevelAsString;
 
-  switch (usersActivity) {
+  switch (userActivity) {
     case '1':
       activityLevelAsString = 'very low';
       break;

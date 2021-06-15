@@ -9,18 +9,18 @@ import { GoalContext } from '../../context';
 export default function GetMealPlanByGoal() {
   const {
     currentGoal,
-    usersWeight,
-    usersHeight,
-    usersAge,
-    usersActivity,
+    userWeight,
+    userHeight,
+    userAge,
+    userActivity,
     dailyMealPlan,
     shortRecipesData,
     isShortRecipesInfoLoaded,
     setCurrentGoal,
-    setUsersWeight,
-    setUsersHeight,
-    setUsersAge,
-    setUsersActivity,
+    setUserWeight,
+    setUserHeight,
+    setUserAge,
+    setUserActivity,
     setIsSubmitClicked,
     setError,
     setIsDataLoading,
@@ -38,15 +38,15 @@ export default function GetMealPlanByGoal() {
     <div className={getMealPlanByGoal}>
       <GoalContext.Provider value={currentGoal}>
         <SetGoal
-          usersWeight={usersWeight}
-          usersHeight={usersHeight}
-          usersAge={usersAge}
-          usersActivity={usersActivity}
+          userWeight={userWeight}
+          userHeight={userHeight}
+          userAge={userAge}
+          userActivity={userActivity}
           setCurrentGoal={setCurrentGoal}
-          setUsersWeight={setUsersWeight}
-          setUsersHeight={setUsersHeight}
-          setUsersAge={setUsersAge}
-          setUsersActivity={setUsersActivity}
+          setUserWeight={setUserWeight}
+          setUserHeight={setUserHeight}
+          setUserAge={setUserAge}
+          setUserActivity={setUserActivity}
           setIsSubmitClicked={setIsSubmitClicked}
         />
       </GoalContext.Provider>

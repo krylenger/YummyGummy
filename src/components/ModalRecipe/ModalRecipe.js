@@ -64,8 +64,8 @@ export function getPreparedModalRecipeData({
   };
 }
 
-export function CreateModalRecipeWindow(
-  {
+export function ModalRecipe({ modalRecipeData, setIsModalRecipeOpened }) {
+  const {
     image,
     readyInMinutes,
     title,
@@ -75,9 +75,8 @@ export function CreateModalRecipeWindow(
     proteinAmount,
     ingredients,
     steps,
-  },
-  setIsModalRecipeOpened,
-) {
+  } = getPreparedModalRecipeData(modalRecipeData);
+
   return (
     <div className={modalRecipeContainer}>
       <div className={modalRecipeContainerInner}>
@@ -125,10 +124,4 @@ export function CreateModalRecipeWindow(
       </div>
     </div>
   );
-}
-
-export function ModalRecipe({ modalRecipeData, setIsModalRecipeOpened }) {
-  const preparedModalRecipeData = getPreparedModalRecipeData(modalRecipeData);
-  const content = CreateModalRecipeWindow(preparedModalRecipeData, setIsModalRecipeOpened);
-  return content;
 }
