@@ -4,12 +4,12 @@ import { openModalRecipe } from '../ModalRecipe';
 import { recipesContainer, mealDescription, recipeCardsContainer } from './DailyMealPlan.css';
 
 function findTargetCardAndOpenModal(
-  { target },
+  event,
   setIsModalRecipeOpened,
   setModalRecipeData,
   detailedRecipes,
 ) {
-  let card = target.closest('li');
+  let card = event.target.closest('li');
   if (!card) return;
   openModalRecipe(card.id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes);
 }
@@ -45,7 +45,12 @@ export default function DailyMealPlan({
   if (detailedRecipes.length) {
     const recipeCards = detailedRecipes.map(detailedRecipeCardData => {
       const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
-      return RecipeCard(preparedRecipeCardData);
+      return (
+        <RecipeCard
+          preparedRecipeCardData={preparedRecipeCardData}
+          key={preparedRecipeCardData.id}
+        />
+      );
     });
     content = recipeCards;
   }

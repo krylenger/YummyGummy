@@ -38,7 +38,12 @@ export default function FridgeRecipes({ detailedRecipes, isMagicFridge, errorInT
   if (detailedRecipes.length) {
     const recipeCards = detailedRecipes.map(detailedRecipeCardData => {
       const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
-      return RecipeCard(preparedRecipeCardData);
+      return (
+        <RecipeCard
+          preparedRecipeCardData={preparedRecipeCardData}
+          key={preparedRecipeCardData.id}
+        />
+      );
     });
     content = recipeCards;
   }

@@ -30,9 +30,14 @@ export default function SearchedRecipes({
   } else if (!detailedRecipes.length) {
     content = 'Please input recipe name.';
   } else {
-    const recipeCards = detailedRecipes.map(detailedRecipeCardData => {
+    const recipeCards = detailedRecipes.map((detailedRecipeCardData, index) => {
       const preparedRecipeCardData = getPreparedRecipeCardData(detailedRecipeCardData);
-      return RecipeCard(preparedRecipeCardData);
+      return (
+        <RecipeCard
+          preparedRecipeCardData={preparedRecipeCardData}
+          key={preparedRecipeCardData.id}
+        />
+      );
     });
     content = recipeCards;
   }

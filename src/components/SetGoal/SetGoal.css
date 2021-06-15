@@ -3,16 +3,16 @@
   padding: 20px;
 }
 
-.getMealPlanByGoalHeader_h2 {
+.getMealPlanByGoalHeader_sectionTitle {
   padding: 0px 0px 10px 0px;
 }
 
-.getMealPlanByGoalHeader_p {
+.getMealPlanByGoalHeader_info {
   padding: 5px 0px 5px 0px;
 }
 
 .usersWeightInput {
-  width: 50px;
+  width: 60px;
   margin-right: 2px;
   text-align: center;
 }

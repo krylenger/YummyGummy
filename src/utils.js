@@ -3,32 +3,89 @@ export function getNutrientAmount(nutrientName, arrayOfAllNutrients) {
   return searchedNutrient.amount;
 }
 
-export function calculateMaxCalories(currentGoal, usersWeight) {
-  usersWeight = parseInt(usersWeight);
+export function calculateMaxCalories(
+  currentGoal,
+  usersWeight,
+  usersHeight,
+  usersAge,
+  usersActivity,
+) {
+  const loseGoal = 'lose';
+  const gainGoal = 'gain';
   let caloriesAmount;
+  let goalCoefficient;
+  let weightCoefficient;
+  let heightCoefficient;
+  let ageCoefficient;
+  let activityCoefficient;
 
-  if (currentGoal === 'lose') {
-    if (usersWeight <= 50) {
-      caloriesAmount = usersWeight * 10 + 1200 - 200;
-    } else if (usersWeight > 50 && usersWeight <= 80) {
-      caloriesAmount = usersWeight * 10 + 1400 - 200;
-    } else if (usersWeight > 80 && usersWeight <= 110) {
-      caloriesAmount = usersWeight * 10 + 1600 - 200;
-    } else {
-      caloriesAmount = usersWeight * 10 + 1800 - 200;
-    }
-  } else {
-    if (usersWeight <= 50) {
-      caloriesAmount = usersWeight * 10 + 1200;
-    } else if (usersWeight > 50 && usersWeight <= 80) {
-      caloriesAmount = usersWeight * 10 + 1400;
-    } else if (usersWeight > 80 && usersWeight <= 110) {
-      caloriesAmount = usersWeight * 10 + 1600;
-    } else {
-      caloriesAmount = usersWeight * 10 + 1800;
-    }
+  usersWeight = parseInt(usersWeight);
+  usersHeight = parseInt(usersHeight);
+  usersAge = parseInt(usersAge);
+  usersActivity = parseInt(usersActivity);
+
+  switch (usersActivity) {
+    case 1:
+      activityCoefficient = 1.2;
+      break;
+    case 2:
+      activityCoefficient = 1.375;
+      break;
+    case 3:
+      activityCoefficient = 1.55;
+      break;
+    case 4:
+      activityCoefficient = 1.725;
+      break;
+    case 5:
+      activityCoefficient = 1.9;
+      break;
   }
+
+  if (currentGoal === loseGoal) {
+    goalCoefficient = 247;
+    weightCoefficient = 9.2;
+    heightCoefficient = 3.1;
+    ageCoefficient = 4.3;
+  } else if (currentGoal === gainGoal) {
+    goalCoefficient = 88;
+    weightCoefficient = 13.4;
+    heightCoefficient = 4.8;
+    ageCoefficient = 5.7;
+  }
+
+  caloriesAmount =
+    (goalCoefficient +
+      weightCoefficient * usersWeight +
+      heightCoefficient * usersHeight -
+      ageCoefficient * usersAge) *
+    activityCoefficient;
+
   return caloriesAmount;
+}
+
+export function displayUsersActivityLevelAsString(usersActivity) {
+  let activityLevelAsString;
+
+  switch (usersActivity) {
+    case '1':
+      activityLevelAsString = 'very low';
+      break;
+    case '2':
+      activityLevelAsString = 'low';
+      break;
+    case '3':
+      activityLevelAsString = 'average';
+      break;
+    case '4':
+      activityLevelAsString = 'high';
+      break;
+    case '5':
+      activityLevelAsString = 'very high';
+      break;
+  }
+
+  return activityLevelAsString;
 }
 
 export function isCurrentRecipeInCache(searchedRecipe, shortRecipesDataCache) {

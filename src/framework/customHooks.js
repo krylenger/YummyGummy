@@ -10,7 +10,10 @@ import {
 
 export function getShortRecipesMealData() {
   const [currentGoal, setCurrentGoal] = useState('gain');
-  const [usersWeight, setUsersWeight] = useState('22');
+  const [usersWeight, setUsersWeight] = useState('');
+  const [usersHeight, setUsersHeight] = useState('');
+  const [usersAge, setUsersAge] = useState('');
+  const [usersActivity, setUsersActivity] = useState('3');
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   const [isShortRecipesInfoLoaded, setIsShortRecipesInfoLoaded] = useState(false);
   const [shortRecipesData, setShortRecipesData] = useState([]);
@@ -26,7 +29,13 @@ export function getShortRecipesMealData() {
         setIsShortRecipesInfoLoaded(true);
       });
       function loadDailyMealPlan() {
-        const maxCalories = calculateMaxCalories(currentGoal, usersWeight);
+        const maxCalories = calculateMaxCalories(
+          currentGoal,
+          usersWeight,
+          usersHeight,
+          usersAge,
+          usersActivity,
+        );
         return fetch(getMealPlanRecipeUrl(maxCalories), getRapidAPIFetchOptionsData())
           .then(response => {
             if (response.ok) return response.json();
@@ -47,6 +56,9 @@ export function getShortRecipesMealData() {
   return {
     currentGoal,
     usersWeight,
+    usersHeight,
+    usersAge,
+    usersActivity,
     isSubmitClicked,
     isShortRecipesInfoLoaded,
     shortRecipesData,
@@ -54,6 +66,9 @@ export function getShortRecipesMealData() {
     error,
     setCurrentGoal,
     setUsersWeight,
+    setUsersHeight,
+    setUsersAge,
+    setUsersActivity,
     setIsSubmitClicked,
     setError,
     setIsDataLoading,

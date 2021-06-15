@@ -1,15 +1,15 @@
 import React from 'react';
 import {
   fridgeItemContainer,
-  fridgeItemContainer_button,
-  fridgeItemContainer_label,
+  fridgeItemContainer_removeButton,
+  fridgeItemContainer_itemName,
 } from './FridgeItem.css';
 
-export function FridgeItem(fridgeItemData, index) {
+export function FridgeItem({ fridgeItemData }) {
   return (
-    <li className={fridgeItemContainer} id={fridgeItemData} key={index}>
-      <button className={fridgeItemContainer_button}>{'x'}</button>
-      <label className={fridgeItemContainer_label} htmlFor={fridgeItemData}>
+    <li className={fridgeItemContainer} id={fridgeItemData}>
+      <button className={fridgeItemContainer_removeButton}>{'x'}</button>
+      <label className={fridgeItemContainer_itemName} htmlFor={fridgeItemData}>
         {fridgeItemData}
       </label>
     </li>

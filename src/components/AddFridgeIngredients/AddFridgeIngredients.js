@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useMagicFridgeItemsContext } from '../../context';
-import styles from './AddFridgeIngredients.css';
+import { getRecipeByIngredientsHeader_info } from './AddFridgeIngredients.css';
 
 function FillFridgeOnChange(value, magicFridgeItems, setMagicFridgeItems) {
   if (magicFridgeItems.length < 5) {
     setMagicFridgeItems([...magicFridgeItems, value]);
-    value = '';
   } else {
     alert('5 ingredients are maximum');
   }
@@ -23,7 +22,7 @@ export default function AddFridgeIngredients({ setMagicFridgeItems }) {
   return (
     <>
       <h2>What's in your fridge?</h2>
-      <p className={styles.getRecipeByIngredientsHeader_p}>
+      <p className={getRecipeByIngredientsHeader_info}>
         Enter up to 5 products you have in the fridge to cook the best meal. Example: apple, milk,
         sugar.
       </p>

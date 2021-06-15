@@ -10,11 +10,17 @@ export default function GetMealPlanByGoal() {
   const {
     currentGoal,
     usersWeight,
+    usersHeight,
+    usersAge,
+    usersActivity,
     dailyMealPlan,
     shortRecipesData,
     isShortRecipesInfoLoaded,
     setCurrentGoal,
     setUsersWeight,
+    setUsersHeight,
+    setUsersAge,
+    setUsersActivity,
     setIsSubmitClicked,
     setError,
     setIsDataLoading,
@@ -33,8 +39,14 @@ export default function GetMealPlanByGoal() {
       <GoalContext.Provider value={currentGoal}>
         <SetGoal
           usersWeight={usersWeight}
+          usersHeight={usersHeight}
+          usersAge={usersAge}
+          usersActivity={usersActivity}
           setCurrentGoal={setCurrentGoal}
           setUsersWeight={setUsersWeight}
+          setUsersHeight={setUsersHeight}
+          setUsersAge={setUsersAge}
+          setUsersActivity={setUsersActivity}
           setIsSubmitClicked={setIsSubmitClicked}
         />
       </GoalContext.Provider>

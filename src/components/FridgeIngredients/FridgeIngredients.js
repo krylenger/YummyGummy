@@ -15,27 +15,28 @@ function removeFridgeItem(target, magicFridgeItems, setMagicFridgeItems) {
 }
 
 export default function FridgeIngredients({ setMagicFridgeItems, setIsMagicButtonClicked }) {
-  let content = null;
-  let magicButton = null;
+  let magicButton;
   const magicFridgeItems = useMagicFridgeItemsContext();
-  if (magicFridgeItems.length > 0) {
-    magicButton = (
-      <button
-        className={fridgeIngredientsListContainer_magicButton}
-        onClick={() => setIsMagicButtonClicked(true)}
-      >
-        Magic
-      </button>
-    );
-  }
-  content = (
-    <ul onClick={event => removeFridgeItem(event.target, magicFridgeItems, setMagicFridgeItems)}>
-      {magicFridgeItems.map((fridgeItemData, index) => FridgeItem(fridgeItemData, index))}
-    </ul>
-  );
+  magicButton = magicFridgeItems.length ? (
+    <button
+      className={fridgeIngredientsListContainer_magicButton}
+      onClick={() => setIsMagicButtonClicked(true)}
+    >
+      Magic
+    </button>
+  ) : null;
+
   return (
     <div className={fridgeIngredientsListContainer}>
-      <div className={fridgeIngredientsListContainer_inner}>{content}</div>
+      <div className={fridgeIngredientsListContainer_inner}>
+        <ul
+          onClick={event => removeFridgeItem(event.target, magicFridgeItems, setMagicFridgeItems)}
+        >
+          {magicFridgeItems.map((fridgeItemData, index) => (
+            <FridgeItem key={index} fridgeItemData={fridgeItemData} />
+          ))}
+        </ul>
+      </div>
       {magicButton}
     </div>
   );

@@ -3,7 +3,7 @@ import {
   modalRecipeContainer,
   modalRecipeContainerInner,
   modalRecipeContainer_imageContainer,
-  modalRecipeContainer_image,
+  modalRecipeContainer_recipeImage,
   modalRecipeContainer_shortInfoContainer,
   shortInfo_nutrientInfoLine,
   modalRecipeContainer_instructions,
@@ -83,7 +83,7 @@ export function CreateModalRecipeWindow(
       <div className={modalRecipeContainerInner}>
         <div className={modalRecipeContainer_header}>
           <div className={modalRecipeContainer_imageContainer}>
-            <img className={modalRecipeContainer_image} src={image} alt={title} />
+            <img className={modalRecipeContainer_recipeImage} src={image} alt={title} />
             <h1 className={modalRecipeContainer_title}>{title}</h1>
           </div>
           <div className={modalRecipeContainer_shortInfoContainer}>
