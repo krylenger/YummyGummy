@@ -1,18 +1,6 @@
 import React from 'react';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard';
-import { openModalRecipe } from '../ModalRecipe';
 import { recipesContainer, mealDescription, recipeCardsContainer } from './DailyMealPlan.css';
-
-function findTargetCardAndOpenModal(
-  event,
-  setIsModalRecipeOpened,
-  setModalRecipeData,
-  detailedRecipes,
-) {
-  let card = event.target.closest('li');
-  if (!card) return;
-  openModalRecipe(card.id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes);
-}
 
 export default function DailyMealPlan({
   dailyMealPlan,
@@ -22,6 +10,7 @@ export default function DailyMealPlan({
 }) {
   let content = null;
   let contentDescription = null;
+
   if (dailyMealPlan) {
     const {
       meals,
@@ -49,6 +38,9 @@ export default function DailyMealPlan({
         <RecipeCard
           preparedRecipeCardData={preparedRecipeCardData}
           key={preparedRecipeCardData.id}
+          detailedRecipes={detailedRecipes}
+          setIsModalRecipeOpened={setIsModalRecipeOpened}
+          setModalRecipeData={setModalRecipeData}
         />
       );
     });
@@ -58,29 +50,7 @@ export default function DailyMealPlan({
   return (
     <div className={recipesContainer}>
       <div className={mealDescription}>{contentDescription}</div>
-      <ul
-        className={recipeCardsContainer}
-        onClick={event => {
-          findTargetCardAndOpenModal(
-            event,
-            setIsModalRecipeOpened,
-            setModalRecipeData,
-            detailedRecipes,
-          );
-        }}
-        onKeyDown={event => {
-          if (event.key === 'Enter' || event.code === 'Space' || event.key === 'EnterNum') {
-            findTargetCardAndOpenModal(
-              event,
-              setIsModalRecipeOpened,
-              setModalRecipeData,
-              detailedRecipes,
-            );
-          }
-        }}
-      >
-        {content}
-      </ul>
+      <ul className={recipeCardsContainer}>{content}</ul>
     </div>
   );
 }

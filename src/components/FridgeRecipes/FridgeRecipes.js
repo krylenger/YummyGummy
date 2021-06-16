@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
 import { getPreparedRecipeCardData, RecipeCard } from '../RecipeCard/RecipeCard';
-import { openModalRecipe, ModalRecipe } from '../ModalRecipe';
+import { ModalRecipe } from '../ModalRecipe';
 import { mealDescription, recipeCardsContainer } from './FridgeRecipes.css';
-
-function findElementAndOpenModal(
-  target,
-  setIsModalRecipeOpened,
-  setModalRecipeData,
-  detailedRecipes,
-) {
-  let card = target.closest('li');
-  if (!card) return;
-  openModalRecipe(card.id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes);
-}
 
 export default function FridgeRecipes({ detailedRecipes, isMagicFridge, errorInTheFridge }) {
   const [isModalRecipeOpened, setIsModalRecipeOpened] = useState(false);
@@ -42,6 +31,9 @@ export default function FridgeRecipes({ detailedRecipes, isMagicFridge, errorInT
         <RecipeCard
           preparedRecipeCardData={preparedRecipeCardData}
           key={preparedRecipeCardData.id}
+          detailedRecipes={detailedRecipes}
+          setIsModalRecipeOpened={setIsModalRecipeOpened}
+          setModalRecipeData={setModalRecipeData}
         />
       );
     });
@@ -50,29 +42,7 @@ export default function FridgeRecipes({ detailedRecipes, isMagicFridge, errorInT
   return (
     <div>
       <div className={mealDescription}>{contentDescription}</div>
-      <ul
-        className={recipeCardsContainer}
-        onClick={event =>
-          findElementAndOpenModal(
-            event.target,
-            setIsModalRecipeOpened,
-            setModalRecipeData,
-            detailedRecipes,
-          )
-        }
-        onKeyDown={event => {
-          if (event.key === 'Enter' || event.code === 'Space' || event.key === 'EnterNum') {
-            findElementAndOpenModal(
-              event.target,
-              setIsModalRecipeOpened,
-              setModalRecipeData,
-              detailedRecipes,
-            );
-          }
-        }}
-      >
-        {content}
-      </ul>
+      <ul className={recipeCardsContainer}>{content}</ul>
       {isModalRecipeOpened ? (
         <ModalRecipe
           modalRecipeData={modalRecipeData}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { recipeCard, recipeCard_image, recipeCard_nutrientInfoLine } from './RecipeCard.css';
 import { getNutrientAmount } from '../../utils';
+import { openModalRecipe } from '../ModalRecipe';
 
 export function getPreparedRecipeCardData({
   id,
@@ -39,9 +40,24 @@ export function RecipeCard({
     carbohydratesAmount,
     proteinAmount,
   },
+  detailedRecipes,
+  setIsModalRecipeOpened,
+  setModalRecipeData,
 }) {
   return (
-    <li className={recipeCard} id={id} tabIndex={0}>
+    <li
+      className={recipeCard}
+      id={id}
+      tabIndex={0}
+      onClick={() =>
+        openModalRecipe(id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes)
+      }
+      onKeyDown={event => {
+        if (event.key === 'Enter' || event.code === 'Space' || event.key === 'EnterNum') {
+          openModalRecipe(id, setIsModalRecipeOpened, setModalRecipeData, detailedRecipes);
+        }
+      }}
+    >
       <h4>{title}</h4>
       <img className={recipeCard_image} src={image} alt={title} />
       <div className={recipeCard_nutrientInfoLine}>

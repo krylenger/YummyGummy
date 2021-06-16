@@ -27,3 +27,9 @@
 .fridgeIngredientsListContainer_magicButton:hover {
   background: #00d9ff;
 }
+
+@media screen and (max-width: 500px) {
+  .fridgeIngredientsListContainer {
+    padding: 8px 0px 0px 18px;
+  }
+}

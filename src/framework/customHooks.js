@@ -205,13 +205,13 @@ export function getDetailedRecipesData({
           .then(responses => Promise.all(responses.map(r => r.json())))
           .then(data => {
             if (!data.length) {
-              // throw new Error('Please enter valid ingredient.');
+              throw new Error('Something went wrong...');
             }
             setIsDataLoading(false);
             setDetailedRecipes(data);
           })
           .catch(error => {
-            setError('Error during loading DetailedRecipesInfo');
+            setError(error + 'Error during loading DetailedRecipesInfo');
           });
       }
     }
