@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useMagicFridgeItemsContext } from '../../context';
-import { getRecipeByIngredientsHeader_info } from './AddFridgeIngredients.css';
+import {
+  getRecipeByIngredientsHeader_info,
+  getRecipeByIngredientsHeader_inputField,
+} from './AddFridgeIngredients.css';
 
 function FillFridgeOnChange(value, magicFridgeItems, setMagicFridgeItems) {
   if (magicFridgeItems.length < 5) {
@@ -28,8 +31,9 @@ export default function AddFridgeIngredients({ setMagicFridgeItems }) {
         }}
       >
         <input
+          className={getRecipeByIngredientsHeader_inputField}
           type="text"
-          placeholder="what is in your fridge?"
+          placeholder="ingredient"
           value={inputValue}
           onChange={e => setInputValue(e.target.value)}
         />

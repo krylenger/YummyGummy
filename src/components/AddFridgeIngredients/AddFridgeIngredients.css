@@ -1,3 +1,8 @@
 .getRecipeByIngredientsHeader_info {
   padding: 10px 0px 5px 0px;
 }
+
+.getRecipeByIngredientsHeader_inputField {
+  max-width: 150px;
+  font-size: 16px;
+}

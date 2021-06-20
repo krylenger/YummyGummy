@@ -40,6 +40,8 @@ export default function SetGoal({
         <input
           className={userWeightInput}
           type="number"
+          min="1"
+          max="500"
           value={userWeight}
           placeholder="kg"
           onChange={e => setUserWeight(e.target.value)}
@@ -49,6 +51,8 @@ export default function SetGoal({
         <input
           className={userWeightInput}
           type="number"
+          min="1"
+          max="300"
           value={userHeight}
           placeholder="cm"
           onChange={e => setUserHeight(e.target.value)}
@@ -58,6 +62,8 @@ export default function SetGoal({
         <input
           className={userWeightInput}
           type="number"
+          min="1"
+          max="125"
           value={userAge}
           placeholder="years"
           onChange={e => setUserAge(e.target.value)}
