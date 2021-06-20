@@ -4,10 +4,8 @@ create your perfect meal
 
 [Spoonacular API](https://spoonacular.com/food-api)
 
-1. Get daily meal plan.
 
-- Get daily meal plan formed by the individual person's parameters. 
-
+1. Get daily meal plan formed by the individual person's parameters. 
 2. Find recipes to use ingredients you already have ("what's in your fridge" search)
 3. Searching recipe by the name.
 
